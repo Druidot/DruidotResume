@@ -1,10 +1,6 @@
 from datetime import datetime
 import os
 import re
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.metrics.pairwise import cosine_similarity
-# import spacy
-# nlp = spacy.load("en_core_web_sm")
 
 class ResumeExtractor:
 
@@ -38,68 +34,6 @@ class ResumeExtractor:
         email_matches = email_pattern.findall(text)
         return email_matches[0] if email_matches else "Email not found"
     
-    # @staticmethod
-    # def extract_experience(text):
-    #     def convert_word_to_number(word):
-    #         word_to_number = {
-    #             "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
-    #             "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
-    #             "eleven": 11, "twelve": 12
-    #         }
-    #         return word_to_number.get(word.lower(), 0)
-        
-    #     # Exclude education-related sections
-    #     education_keywords = ["education", "degree", "bachelor", "master", "phd", "university", "college", "school"]
-    #     education_pattern = re.compile(r'(education|bachelor|master|phd|university|college|school)', re.IGNORECASE)
-    #     text_sections = re.split(r'\n+', text)
-    #     filtered_text = "\n".join(
-    #         section for section in text_sections if not education_pattern.search(section)
-    #     )
-
-    #     total_experience_months = 0
-    #     seen_date_ranges = set()
-
-    #     # Handle date range patterns
-    #     date_pattern = re.compile(r'(\w+\s+\d{4}|\d{1,2}/\d{4})\s*[—-]\s*(\w+\s+\d{4}|\d{1,2}/\d{4})', re.IGNORECASE)
-    #     date_matches = date_pattern.findall(filtered_text)
-    #     for start, end in date_matches:
-    #         if (start, end) in seen_date_ranges:
-    #             continue
-    #         seen_date_ranges.add((start, end))
-    #         try:
-    #             if '/' in start:
-    #                 start_date = datetime.strptime(start.strip(), '%m/%Y')
-    #                 end_date = datetime.strptime(end.strip(), '%m/%Y')
-    #             else:
-    #                 start_date = datetime.strptime(start.strip(), '%B %Y')
-    #                 end_date = datetime.strptime(end.strip(), '%B %Y')
-    #             months_difference = (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month)
-    #             total_experience_months += months_difference
-    #         except ValueError:
-    #             continue
-
-    #     # Handle textual patterns for years and months
-    #     year_month_pattern = re.findall(r'(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s*(years?|yrs?|months?|mos?)', filtered_text, re.IGNORECASE)
-    #     for value, unit in year_month_pattern:
-    #         if value.isdigit():
-    #             value = int(value)
-    #         else:
-    #             value = convert_word_to_number(value)
-    #         if 'month' in unit.lower() or 'mos' in unit.lower():
-    #             total_experience_months += value
-    #         elif 'year' in unit.lower() or 'yr' in unit.lower():
-    #             total_experience_months += value * 12
-
-    #     # Convert months to years and months
-    #     total_experience_months = max(total_experience_months, 0)
-    #     years = total_experience_months // 12
-    #     months = total_experience_months % 12
-
-    #     if total_experience_months == 0:
-    #         return "Fresher"
-        
-    #     return {"years": years, "months": months}
-
     @staticmethod
     def calculate_total_experience(experiences):
         """
@@ -114,9 +48,9 @@ class ResumeExtractor:
         total_months = 0
         for exp in experiences:
             if 'dates' in exp and exp['dates']:
-                print(exp['dates'])
+                #print(exp['dates'])
                 start_date, end_date = ResumeExtractor.parse_dates(exp['dates'])
-                print('start_date',start_date,'end_date',end_date)
+                #print('start_date',start_date,'end_date',end_date)
                 if start_date and end_date:
                     total_months += (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month)
 
@@ -247,12 +181,11 @@ class ResumeExtractor:
         responsibilities_buffer = []
         if experience_text.get('experience') is not None:
             for line in experience_text['experience'].splitlines():
-                print("line=====>",line)
                 line = line.strip()
 
                 # Match job title
                 job_title_match = job_title_pattern.match(line)
-                print("job_title_match===>",job_title_match)
+                #print("job_title_match===>",job_title_match)
 
                 #-need this
                 if job_title_match:
@@ -268,7 +201,7 @@ class ResumeExtractor:
 
                 # Match company name
                 company_match = company_pattern.search(line)
-                print("company_match===>",company_match)
+                #print("company_match===>",company_match)
 
                 if company_match and current_experience:
                     current_experience["company"] = company_match.group().strip()
@@ -277,7 +210,7 @@ class ResumeExtractor:
                 # Match dates
 
                 date_match = date_pattern.search(line)
-                print("date_match===>",date_match,current_experience)
+                #print("date_match===>",date_match,current_experience)
                 if date_match:
                     if current_experience.get('job_title') is not None:
                         current_experience["dates"] = date_match.group(0)
@@ -298,7 +231,7 @@ class ResumeExtractor:
             # Calculate total experience
             total_experience = ResumeExtractor.calculate_total_experience(experiences)
             experiences.append({'total_experiences': total_experience})
-            print("experiences=======>",experiences)
+            #print("experiences=======>",experiences)
 
         return experiences
 
@@ -395,10 +328,10 @@ class ResumeExtractor:
             sections[current_section] = "\n".join(buffer).strip()
 
 
-        print("section------------------------------------------")
-        print("Sections====>",sections)
+        #print("section------------------------------------------")
+        #print("Sections====>",sections)
 
-        print("section------------------------------------------")
+        #print("section------------------------------------------")
 
         
         return sections
@@ -449,7 +382,7 @@ class ResumeExtractor:
                 })
             else:
                 education_details.append({"raw_entry": line.strip()})
-        # print(education_details,"education_details")
+        # #print(education_details,"education_details")
 
         structured_education = []
         current_entry = {}
@@ -640,6 +573,8 @@ class ResumeExtractor:
         #--------------------Skills Scores----------------#
         max_skill_score = 100
 
+        print("Skills set:",skill_set)
+
         skill_point = max_skill_score/len(skill_set)
         proportion_matched = len(matched_skills)  
         skill_score = skill_point*proportion_matched
@@ -654,15 +589,29 @@ class ResumeExtractor:
         
         max_experience_score = 100
 
-        exp_point = max_experience_score/(int(experience_range_dict['max'])-int(experience_range_dict['min'])) 
+        # Determine the resume's experience years
         if resume_details['Experience_cal'] == "Fresher":
             resume_year = 0
         else:
-           resume_year = resume_details['Experience_cal']['years']
+            resume_year = int(resume_details['Experience_cal']['years'])
 
-        experience_score = exp_point*resume_year
-        if experience_score > max_experience_score:
-            experience_score = max_experience_score
+        # Calculate the experience score
+        if int(experience_range_dict['min']) == int(experience_range_dict['max']):
+            if resume_year >= int(experience_range_dict['min']):
+                experience_score = max_experience_score
+            else:
+                experience_score = 0
+        else:
+            if resume_year >= int(experience_range_dict['max']):
+                experience_score = max_experience_score
+            elif resume_year < int(experience_range_dict['min']):
+                experience_score = 0
+            else:
+                experience_score = ((resume_year - int(experience_range_dict['min'])) / 
+                            (int(experience_range_dict['max']) - int(experience_range_dict['min']))) * max_experience_score
+
+
+          
     
 
 
@@ -681,11 +630,16 @@ class ResumeExtractor:
 
         # location_score = 0
         # if resume_core_location == preferred_core_location:
-        #     location_score = 10  
+        #     location_score = 10 
+        # 
+        print("Formula : ")
+        print(f"Calculation : total_score = {skill_score} + {experience_score} / {max_skill_score}+{max_experience_score}*100" )
+
+
         
         total_score = (skill_score + experience_score )/(max_skill_score+max_experience_score)*100
-        # print("skill_score : ",skill_score, "experience_score :", experience_score)
-        # print("total score--->",total_score)
+        # #print("skill_score : ",skill_score, "experience_score :", experience_score)
+        print("total score--->",total_score)
         
         return total_score
     

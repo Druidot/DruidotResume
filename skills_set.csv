@@ -1,0 +1,128 @@
+skill_name,skill_type
+Python,technical
+JavaScript,technical
+Java,technical
+C++,technical
+Ruby,technical
+PHP,technical
+SQL,technical
+NoSQL,technical
+MongoDB,technical
+PostgreSQL,technical
+MySQL,technical
+OracleDB,technical
+SQLite,technical
+Redis,technical
+Elasticsearch,technical
+Git,technical
+Docker,technical
+Kubernetes,technical
+AWS,technical
+Azure,technical
+Google Cloud,technical
+Machine Learning,technical
+Deep Learning,technical
+Data Science,technical
+TensorFlow,technical
+PyTorch,technical
+Scikit-learn,technical
+NLP,technical
+Computer Vision,technical
+REST,technical
+GraphQL,technical
+API,technical
+ETL,technical
+DevOps,technical
+CI/CD,technical
+Agile,technical
+Scrum,technical
+Jenkins,technical
+Terraform,technical
+Ansible,technical
+Linux,technical
+Unix,technical
+Bash,technical
+Shell Scripting,technical
+HTML,technical
+CSS,technical
+JavaScript,technical
+React,technical
+Vue.js,technical
+Angular,technical
+Node.js,technical
+Express.js,technical
+TypeScript,technical
+SASS,technical
+Tailwind CSS,technical
+Bootstrap,technical
+jQuery,technical
+MongoDB,technical
+Firebase,technical
+Apache,technical
+Nginx,technical
+Apache Kafka,technical
+RabbitMQ,technical
+Elasticsearch,technical
+GraphQL,technical
+Jest,technical
+Mocha,technical
+Karma,technical
+Chai,technical
+Postman,technical
+Swagger,technical
+JUnit,technical
+Mockito,technical
+Cucumber,technical
+Salesforce,technical
+Tableau,technical
+Power BI,technical
+Excel,technical
+Photoshop,technical
+Illustrator,technical
+AutoCAD,technical
+Sketch,technical
+Figma,technical
+Blender,technical
+ZBrush,technical
+AWS Lambda,technical
+S3,technical
+RDS,technical
+VPC,technical
+IAM,technical
+CloudFormation,technical
+Big Data,technical
+Hadoop,technical
+Spark,technical
+Kafka,technical
+Data Warehousing,technical
+ETL Pipelines,technical
+Data Engineering,technical
+NoSQL,technical
+Digital Marketing,non-technical
+Project Management,non-technical
+Leadership,non-technical
+Communication,non-technical
+Teamwork,non-technical
+Problem-solving,non-technical
+Critical Thinking,non-technical
+Time Management,non-technical
+Negotiation,non-technical
+Adaptability,non-technical
+Creativity,non-technical
+Conflict Resolution,non-technical
+Presentation Skills,non-technical
+Decision Making,non-technical
+Empathy,non-technical
+Networking,non-technical
+Collaboration,non-technical
+Client Management,non-technical
+Customer Service,non-technical
+Interpersonal Skills,non-technical
+Mentoring,non-technical
+Public Speaking,non-technical
+Conflict Management,non-technical
+Organization,non-technical
+Stress Management,non-technical
+Work Ethic,non-technical
+Self-motivated,non-technical
+Work-life Balance,non-technical
