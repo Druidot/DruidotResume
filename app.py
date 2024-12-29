@@ -221,7 +221,9 @@ def process_resumes():
         
 
                 # Example usage
+        current_directory = os.getcwd()
         csv_file_path = 'skills_set.csv'  # Replace with the path to your skills CSV file
+        csv_file_path = os.path.join(current_directory, csv_file_path)
         skills = load_skills_from_csv(csv_file_path)
         result = extract_skills_and_experience(job_description, skills)
 
