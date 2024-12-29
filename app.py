@@ -191,7 +191,6 @@ def extract_resume_data(job_desc,skill_set,experience_range,experience_range_dic
                     # Calculate resume score
                     score = ResumeExtractor.calculate_resume_score(details, matched_skills,skill_set,experience_range_dict)
                     details["Score"] = round(score, 2)
-                    resume_data.append(details)
 
                     
 
