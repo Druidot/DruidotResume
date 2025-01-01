@@ -192,13 +192,16 @@ def extract_resume_data(job_desc,skill_set,experience_range,experience_range_dic
                     score = ResumeExtractor.calculate_resume_score(details, matched_skills,skill_set,experience_range_dict)
                     details["Score"] = round(score, 2)
 
+                    resume_data.append(details)
+
+
                     
 
-                    if matches_criteria(details, set(skill_set), experience_range):
-                        resume_data.append(details)
-                        print(f"Added {file_name} to the output.")
-                    else:
-                        print(f"Skipped {file_name}: does not match criteria.")
+                    # if matches_criteria(details, set(skill_set), experience_range):
+                    #     resume_data.append(details)
+                    #     print(f"Added {file_name} to the output.")
+                    # else:
+                    #     print(f"Skipped {file_name}: does not match criteria.")
 
                 except Exception as e:
                     print(f"Error processing {file_name}: {e}")
@@ -222,7 +225,7 @@ def process_resumes():
 
                 # Example usage
         current_directory = os.getcwd()
-        csv_file_path = 'skills_set.csv'  # Replace with the path to your skills CSV file
+        csv_file_path = 'DruidotResume\skills_set.csv'  # Replace with the path to your skills CSV file
         csv_file_path = os.path.join(current_directory, csv_file_path)
         skills = load_skills_from_csv(csv_file_path)
         result = extract_skills_and_experience(job_description, skills)
