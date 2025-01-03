@@ -296,12 +296,13 @@ class ResumeExtractor:
             "awards": "awards",
             "summary": "summary",
             "objective": "objective"
+
         }
 
         section_pattern = re.compile(
             r"^(education|experience|work history|work experience|"
             r"professional experience|certifications|Employment History?|skills|projects|"
-            r"achievements|courses?|awards?|summary|objective)$",
+            r"achievements|courses?|awards?|summary|objective):?$",
             re.IGNORECASE
         )
 
@@ -328,10 +329,10 @@ class ResumeExtractor:
             sections[current_section] = "\n".join(buffer).strip()
 
 
-        #print("section------------------------------------------")
-        #print("Sections====>",sections)
+        # print("section------------------------------------------")
+        # print("Sections====>",sections)
 
-        #print("section------------------------------------------")
+        # print("section------------------------------------------")
 
         
         return sections
