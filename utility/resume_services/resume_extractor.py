@@ -124,13 +124,6 @@ class ResumeExtractor:
             list[dict]: A list of dictionaries containing structured experience details.
         """
         experiences = []
-
-        # Regular expression patterns
-#         job_title_pattern = re.compile(
-#     r"(?:\b(?:Python|Full Stack|Frontend|Backend|Software|Data|Machine Learning|AI|Cloud|System|DevOps|Network|Embedded)\b\s*)?"  # Optional prefix like 'Python' or 'Full Stack'
-#     r"(Developer|Engineer|Internship|Consultant|Architect|Specialist|Manager)",  # Match the main job title
-#     re.IGNORECASE
-# )
         job_title_pattern = re.compile(
     r"(?:\b(?:Senior|Junior|Lead|Associate|Freelance|Temporary|Full-time|Part-time|Remote|Intern)\b\s*)?"  # Optional prefix like 'Senior' or 'Intern'
     r"([A-Za-z]+(?:\s[A-Za-z]+)*\s*)"  # Match the main job title (handles multi-word titles)
@@ -141,22 +134,6 @@ class ResumeExtractor:
     r"(?i)(?<=\bCompany:\s)([^\n]+)",  # Match text following 'Company:' until the end of the line
     re.IGNORECASE
 )
-#         date_pattern = re.compile(r"""
-#     \b(                             # Begin capturing group for the entire date range
-#         (                           # First option: Full month and year range
-#             (January|February|March|April|May|June|July|August|September|October|November|December)
-#             \s+\d{4}\s*[-—]\s*      # Month-Year followed by a separator (- or —)
-#             (Present|Current|\w+\s+\d{4})  # Match "Present", "Current", or another Month-Year
-#         )
-#         |                           # OR
-#         (\d{4}\s*[-—]\s*(Present|Current|\d{4})) # Second option: Year-only range
-#         |
-#         (?:[A-Za-z]+ \d{4})\s*[-–—]\s*(?:[A-Za-z]+ \d{4})
-                                  
-#     )
-#     \b                              # Word boundary to prevent partial matches
-# """, re.IGNORECASE | re.VERBOSE)
-
         date_pattern = re.compile(r"""
     \b(                                     # Begin capturing group for the entire date range
         (                                   # First option: Full month and year range
@@ -218,10 +195,7 @@ class ResumeExtractor:
                         experiences.append({"dates":date_match.group(0)})
                     continue
 
-                # Match responsibilities
-                # responsibility_match = responsibility_pattern.match(line)
-                # if responsibility_match:
-                #     responsibilities_buffer.append(responsibility_match.group(1))
+           
 
             # Save the last experience entry
             if current_experience:
@@ -247,25 +221,7 @@ class ResumeExtractor:
 
 
 
-    # @staticmethod
-    # def split_into_sections(text):
-    #     sections = {}
-    #     section_pattern = re.compile(
-    #         r"(education|experience|certifications?|skills|projects|achievements|courses?|awards?|summary|objective|work history)",
-    #         re.IGNORECASE
-    #     )
-    #     current_section = None
-    #     for line in text.splitlines():
-    #         line = line.strip()
-    #         if not line:
-    #             continue
-    #         match = section_pattern.match(line)
-    #         if match:
-    #             current_section = match.group(1).lower()
-    #             sections[current_section] = []
-    #         elif current_section:
-    #             sections[current_section].append(line)
-    #     return {k: "\n".join(v) for k, v in sections.items()}
+   
 
     @staticmethod
     def split_into_sections(text):
@@ -329,10 +285,7 @@ class ResumeExtractor:
             sections[current_section] = "\n".join(buffer).strip()
 
 
-        # print("section------------------------------------------")
-        # print("Sections====>",sections)
-
-        # print("section------------------------------------------")
+   
 
         
         return sections
@@ -346,11 +299,7 @@ class ResumeExtractor:
                 return sections["courses"]
         return "No certifications found"
     
-    # @staticmethod
-    # def extract_education(sections):
-    #     if "education" in sections :
-    #         return sections["education"]
-    #     return "No education details found"
+
 
     @staticmethod
     def extract_education(education_text):
@@ -611,67 +560,13 @@ class ResumeExtractor:
                 experience_score = ((resume_year - int(experience_range_dict['min'])) / 
                             (int(experience_range_dict['max']) - int(experience_range_dict['min']))) * max_experience_score
 
-
-          
-    
-
-
-        #--------------------Experience Scores----------------#
-        
-
-        # max_location_score = 10
-        # preferred_location = 'mumbai'
-        # resume_location = resume_details['Location']
-        # preferred_location = preferred_location.strip()
-
-        # resume_core_location = ResumeExtractor.extract_core_location(resume_location)
-        # preferred_core_location = ResumeExtractor.extract_core_location(preferred_location)
-
-
-
-        # location_score = 0
-        # if resume_core_location == preferred_core_location:
-        #     location_score = 10 
-        # 
         print("Formula : ")
         print(f"Calculation : total_score = {skill_score} + {experience_score} / {max_skill_score}+{max_experience_score}*100" )
 
-
-        
         total_score = (skill_score + experience_score )/(max_skill_score+max_experience_score)*100
-        # #print("skill_score : ",skill_score, "experience_score :", experience_score)
-        print("total score--->",total_score)
         
         return total_score
     
 
-    # @staticmethod
-    # def calculate_job_score(resume_text, job_description):
-    #     # Combine resume and job description into a single corpus
-    #     corpus = [resume_text, job_description]
-        
-    #     # Convert text to TF-IDF features
-    #     vectorizer = TfidfVectorizer(stop_words='english')
-    #     tfidf_matrix = vectorizer.fit_transform(corpus)
-        
-    #     # Calculate cosine similarity between resume and job description
-    #     similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
-        
-    #     # Convert similarity score to percentage
-    #     score = round(similarity * 100, 2)
-    #     return score
-    
-    # @staticmethod
-    # def extract_skills_from_resume(resume_text):
-    #     doc = nlp(resume_text)
-    #     # ner_skills = [ent.text for ent in doc.ents if ent.label_ == 'PERSON']  # Organizations are often used as skills
 
-    #     # Extract noun chunks and check if they might represent skills (you can refine this list)
-    #     potential_skills = [chunk.text for chunk in doc.noun_chunks if len(chunk.text.split()) == 1]  # Only single words
-        
-    #     # Further filter the noun chunks based on a predefined skill list or patterns if needed
-    #     # For example, filtering out common words like 'course', 'maintained', etc.
-    #     filtered_skills = [skill for skill in potential_skills if skill.lower() not in ['course', 'maintained', 'event']]
-    
-    #     return filtered_skills
 

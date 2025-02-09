@@ -42,16 +42,6 @@ def extract_skills_and_experience(job_description, skills):
 
     min_experience, max_experience = None, None
 
-    # for match in experience_matches:
-    #     if match[0] and match[1]:  # Matches like '2–5 years' or '2-5 years'
-    #         min_experience = int(match[0])
-    #         max_experience = int(match[1])
-    #     elif match[2]:  # Matches like 'minimum 3 years'
-    #         min_experience = int(match[2])
-    #     elif match[3]:  # Matches like '3 years'
-    #         min_experience = int(match[3])
-    #         max_experience = min_experience  # If there's no range, set max as min
-
     for match in experience_matches:
     # Create a list of all matched groups that are non-empty
         non_empty_groups = [int(group) for group in match if group]
