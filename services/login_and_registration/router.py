@@ -74,10 +74,13 @@ def login():
         return redirect(url_for("auth.login_page"))
 
     user = authenticate_user(user_data.email, user_data.password)
-    if user:
+    if not user.is_verified:
+        flash("Your Account is not verified by admin", "danger")  
+    elif user and user.is_active:
         login_user(user)
         return redirect(url_for('auth.dashboard'))  
-    flash("Invalid credentials", "error")  
+    else:
+        flash("Invalid credentials", "danger")  
     return redirect(url_for("auth.login_page")) 
 
 
@@ -95,6 +98,10 @@ def logout():
 @validate()
 @login_required
 def dashboard():
-    return render_template('./frontend/dashboard_main.html')
+    if current_user.is_admin:
+        users = User.query.all()
+        return render_template('./frontend/admin_pannel.html', users=users)
+    return render_template('./frontend/searchbar.html')
+
 
 

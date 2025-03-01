@@ -125,26 +125,18 @@
 </head>
 <body class="bg-dark text-white dark-mode">
   <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-item p-3 d-flex align-items-center" onclick="openLink('home')"><i class="fas fa-home me-2"></i> Home</div>
-    <div class="sidebar-item p-3 d-flex align-items-center" onclick="openLink('trending')"><i class="fas fa-fire me-2"></i> Trending</div>
-    <div class="sidebar-item p-3 d-flex align-items-center" onclick="openLink('subscriptions')"><i class="fas fa-play-circle me-2"></i> Subscriptions</div>
-    <div class="sidebar-item p-3 d-flex align-items-center" onclick="openLink('history')"><i class="fas fa-history me-2"></i> History</div>
-    <div class="sidebar-item p-3 d-flex align-items-center" onclick="openLink('library')"><i class="fas fa-folder me-2"></i> Library</div>
-    <div class="sidebar-item p-3 d-flex align-items-center" onclick="openLink('settings')"><i class="fas fa-cogs me-2"></i> Settings</div>
-    <a class="sidebar-item p-3 d-flex align-items-center" href="/auth/logout"><i class="fas fa-person me-2"></i> Logout</a>
-
-  </div>
+  
 
   <!-- Sidebar Toggle Button -->
-  <button class="btn btn-transparent btn-light position-fixed top-0 start-0 m-3" onclick="toggleSidebar()">
+  <!-- <button class="btn btn-transparent btn-light position-fixed top-0 start-0 m-3" onclick="toggleSidebar()">
     <i class="fas fa-bars dark-mode-btn"></i>
-  </button>
+  </button> -->
 
   <!-- Dark/Light Mode Toggle Button -->
   <button class="btn btn-transparent btn-outline-light position-fixed top-0 end-0 m-3 dark-mode-btn" onclick="toggleDarkMode()">
     <i class="fas fa-moon dark-mode-btn"></i>
   </button>
+
 
 
   
@@ -158,10 +150,6 @@
     
     <div class="d-flex justify-content-center mb-4">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <!-- <button class="btn btn-outline-light ms-3" id="googleBtn"><i class="fab fa-google"></i></button>
-        <button class="btn btn-outline-light ms-3" id="youtubeBtn"><i class="fab fa-youtube"></i></button>
-        <button class="btn btn-outline-light ms-3" id="facebookBtn"><i class="fab fa-facebook"></i></button>
-        <button class="btn btn-outline-light ms-3" id="twitterBtn"><i class="fab fa-twitter"></i></button> -->
         <a class="btn btn-outline-light ms-3" id="twitterBtn" href="/resume/resume_extraction"><i class="bi bi-file-person"></i>Resume</a>
 
       </div>

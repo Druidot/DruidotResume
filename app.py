@@ -6,6 +6,7 @@ from extensions import db, ma, bcrypt, jwt
 from services.login_and_registration.router import auth_bp
 from services.resume_extraction.router import resume_bp
 from utility.common_login import login_manager
+from services.admin.router import admin_bp
 
 
 app = Flask(__name__)
@@ -26,6 +27,8 @@ jwt.init_app(app)
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(resume_bp)
+app.register_blueprint(admin_bp)
+
 
 if __name__ == "__main__":
     with app.app_context():

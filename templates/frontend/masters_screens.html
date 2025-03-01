@@ -1,0 +1,472 @@
+
+
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="myTabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#company">Company</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#country">Country</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#city">City</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#branch">Branch</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#department">Department</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#project">Project</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#manager">Manager</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#manager_project_map">Manager Project Mapping</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <!-- Company Form -->
+        <div id="company" class="tab-pane fade show active">
+            <div class="accordion" id="companyAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#companyForm">
+                            Company Details
+                        </button>
+                    </h2>
+                    <div id="companyForm" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <form action="/admin/add_company" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label" >Company Name</label>
+                                    <input type="text" class="form-control" required name="company_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Company Address</label>
+                                    <input type="text" class="form-control"  name="company_address">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" required  name="company_email">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" >Phone</label>
+                                    <input type="text" class="form-control" name="company_phone">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="container mt-4">
+                        <table id="companyTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Company Address</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody id="companyTablesbody">
+                            
+                                
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Country Form -->
+        <div id="country" class="tab-pane fade">
+            <form action="/admin/add_country" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Country Name</label>
+                    <input type="text" class="form-control" required name="country_name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Country Code</label>
+                    <input type="text" class="form-control" required name="country_code">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="container mt-4">
+                <table id="countryTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Country Name</th>
+                            <th>Country Code</th>
+                        </tr>
+                    </thead>
+                    <tbody id="countryTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- City Form -->
+        <div id="city" class="tab-pane fade">
+            <form action="/admin/add_city" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">City Name</label>
+                    <input type="text" class="form-control" required name="city_name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Country</label>
+                    <select class="form-select" id="cityCountry" name="city_country">
+                        <option>Select Country</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+            <div class="container mt-4">
+                <table id="cityTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>City Name</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cityTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Branch Form -->
+        <div id="branch" class="tab-pane fade">
+            <form action="/admin/add_branch" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Branch Name</label>
+                    <input type="text" class="form-control" required name="branch_name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Company</label>
+                    <select class="form-select" id="branchCompany" name="company_id">
+                        <option>Select Company</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">City</label>
+                    <select class="form-select" id="branchCity" name="city_id">
+                        <option>Select City</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="container mt-4">
+                <table id="branchTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <td>Branch Name</td>
+                            <td>Company</td>
+                            <td>City</td>
+                        </tr>
+                    </thead>
+                    <tbody id="branchTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Department Form -->
+        <div id="department" class="tab-pane fade">
+            <form action="/admin/add_department" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Department Name</label>
+                    <input type="text" class="form-control" required name="department_name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Branch</label>
+                    <select class="form-select" id="departmentBranch" name="branch_id">
+                        <option>Select Branch</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="container mt-4">
+                <table id="departmentTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <td>Department Name</td>
+                            <td>Branch</td>
+                        </tr>
+                    </thead>
+                    <tbody id="departmentTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Project Form -->
+        <div id="project" class="tab-pane fade">
+            <form action="/admin/add_project" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Project Name</label>
+                    <input type="text" class="form-control" required name="project_name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select class="form-select" id="projectDepartment" name="department_id">
+                        <option>Select Department</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="container mt-4">
+                <table id="projectTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <td>Project Name</td>
+                            <td>Department</td>
+                        </tr>
+                    </thead>
+                    <tbody id="projectTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- Manager Form -->
+        <div id="manager" class="tab-pane fade">
+            <form action="/admin/add_manager" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Manager Name</label>
+                    <input type="text" class="form-control" required name="manager_name">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="container mt-4">
+                <table id="managerTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <td>Manager Name</td>
+                        </tr>
+                    </thead>
+                    <tbody id="managerTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Manager Project Mapping Form -->
+        <div id="manager_project_map" class="tab-pane fade">
+            <form action="/admin/add_manager_project_map" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Manager</label>
+                    <select class="form-select" id="managerProjectMapManager" name="manager_id">
+                        <option>Select Manager</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Project</label>
+                    <select class="form-select" id="managerProjectMapProject" name="project_id">
+                        <option>Select Project</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <div class="container mt-4">
+                <table id="managerprojectTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                    <thead class="table-primary">
+                        <tr>
+                            <td>Manager</td>
+                            <td>Project</td>
+                        </tr>
+                    </thead>
+                    <tbody id="managerprojectTablesbody">
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $.ajax({
+    url: "/admin/get_records/country",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
+            $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+
+$.ajax({
+    url: "/admin/get_records/company",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+            $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+
+$.ajax({
+    url: "/admin/get_records/city",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
+            $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+$.ajax({
+    url: "/admin/get_records/branch",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+            $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+
+$.ajax({
+    url: "/admin/get_records/department",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+            $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+
+$.ajax({
+    url: "/admin/get_records/project",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+            $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td></tr>");
+
+            
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+
+$.ajax({
+    url: "/admin/get_records/manager",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log(value);
+            $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
+            $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+$.ajax({
+    url: "/admin/get_records/ManagerProjectMap",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+        console.log("Success:", response);
+        $.each(response, function(index, value) {
+            console.log("manager=",value);
+            $("#managerprojectTablesbody").append("<tr><td>" + value.manager_name + "</td><td>" + value.project_name+ "</td></tr>");
+        });
+
+        // Handle response data
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+ </script>

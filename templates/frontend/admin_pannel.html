@@ -1,0 +1,369 @@
+{% extends './frontend/base.html' %}
+{% block body %}
+
+<h1 class="text-center">Admin Panel</h1>
+
+<div class="container">
+  <!-- Tabs Navigation -->
+  <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="form-tab" data-bs-toggle="tab" data-bs-target="#formContent" type="button" role="tab">Company Registration</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="table-tab" data-bs-toggle="tab" data-bs-target="#tableContent" type="button" role="tab">User Table</button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="table-tab" data-bs-toggle="tab" data-bs-target="#companydetails" type="button" role="tab">Company Details</button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3" id="adminTabsContent">
+    <!-- Form Tab Content -->
+    <div class="tab-pane fade show active" id="formContent" role="tabpanel">
+      <div class="accordion" id="formAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#formCollapse" aria-expanded="true">
+              Fill Details
+            </button>
+          </h2>
+          <div id="formCollapse" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              {% include './frontend/masters_screens.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Tab Content -->
+    <div class="tab-pane fade" id="tableContent" role="tabpanel">
+      <table id="myTable" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col">SR.No</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Role</th>
+            <!-- <th scope="col">Is Admin</th> -->
+            <th scope="col">Is Active</th>
+            <th scope="col">Is Verified</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.created_at.strftime('%d-%b-%Y %I:%M:%S %p') }}</td>
+            <td><select {% if user.is_admin %} disabled {% endif %} onchange="ChangeRole('{{user.id}}')" id="user_id_{{user.id}}">
+              <option value="" {% if user.roles == '' %} selected {% endif %}>Please Select Role...</option>
+              <option value="admin" {% if user.roles == 'admin' %} selected {% endif %}>Admin</option>
+              <option value="user" {% if user.roles == 'user' %} selected {% endif %}>User</option>
+              <option value="customer" {% if user.roles == 'customer' %} selected {% endif %}>Customer</option>
+            </select></td>
+
+            <!-- <td><input type="checkbox" {% if user.is_admin %} checked {% endif %} class="primary" onchange="MakeAdmin('{{user.id}}')"></td> -->
+            <td><input type="checkbox" {% if user.is_active %} checked {% endif %} class="primary" onchange="MakeActive('{{user.id}}')"  {% if user.is_admin %} disabled {% endif %}></td>
+            <td><input type="checkbox" {% if user.is_verified %} checked {% endif %} class="primary" onchange="Makeverified('{{user.id}}')"  {% if user.is_admin %} disabled {% endif %}></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="tab-pane fade" id="companydetails" role="tabpanel">
+      <table id="companyTable" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+        <thead class="table-primary">
+          <tr>
+              <th>Company Name</th>
+              <th>Company Address</th>
+              <th>Company Email</th>
+              <th>Company Phone</th>
+              <th>Branch Name</th>
+              <th>City</th>
+              <th>Country</th>
+              <th>Department Name</th>
+              <th>Project Name</th>
+              <th>Manager Name</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+         
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- Initialize DataTable -->
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                "paging": true,       // Enable pagination
+                "searching": true,    // Enable search box
+                "ordering": true,     // Enable sorting
+                "info": true,         // Enable info display
+                }
+            );
+
+           
+
+            $(document).ready(function() {
+            // Assuming the data is coming from an AJAX call
+            $.ajax({
+                url: '/admin/get_all_records', // Replace with your actual API endpoint
+                method: 'GET', // Or 'POST' if needed
+                success: function(response) {
+                    // Log the response to check data structure
+                    console.log(response);
+
+                    // Check if the response contains valid data
+                    if (response && response.companies) {
+                        var tableBody = $('#companyTable tbody');
+
+                        // Loop through the companies
+                        response.companies.forEach(function(company) {
+                            // If there are no branches, handle it
+                            if (company.branches && company.branches.length > 0) {
+                                company.branches.forEach(function(branch) {
+                                    // If there are no departments, handle it
+                                    if (branch.departments && branch.departments.length > 0) {
+                                        branch.departments.forEach(function(department) {
+                                            // If there are no projects, handle it
+                                            if (department.projects && department.projects.length > 0) {
+                                                department.projects.forEach(function(project) {
+                                                    // If there are no managers, handle it
+                                                    if (project.managers && project.managers.length > 0) {
+                                                        project.managers.forEach(function(manager) {
+                                                            tableBody.append(`
+                                                                <tr>
+                                                                    <td>${company.company_name || 'N/A'}</td>
+                                                                    <td>${company.company_address || 'N/A'}</td>
+                                                                    <td>${company.company_email || 'N/A'}</td>
+                                                                    <td>${company.company_phone || 'N/A'}</td>
+                                                                    <td>${branch.branch_name || 'N/A'}</td>
+                                                                    <td>${branch.city.city_name || 'N/A'}</td>
+                                                                    <td>${branch.city.country.country_name || 'N/A'}</td>
+                                                                    <td>${department.department_name || 'N/A'}</td>
+                                                                    <td>${project.project_name || 'N/A'}</td>
+                                                                    <td>${manager.manager_name || 'N/A'}</td>
+                                                                </tr>
+                                                            `);
+                                                        });
+                                                    } else {
+                                                        // If no managers, still add project details
+                                                        tableBody.append(`
+                                                            <tr>
+                                                                <td>${company.company_name || 'N/A'}</td>
+                                                                <td>${company.company_address || 'N/A'}</td>
+                                                                <td>${company.company_email || 'N/A'}</td>
+                                                                <td>${company.company_phone || 'N/A'}</td>
+                                                                <td>${branch.branch_name || 'N/A'}</td>
+                                                                <td>${branch.city.city_name || 'N/A'}</td>
+                                                                <td>${branch.city.country.country_name || 'N/A'}</td>
+                                                                <td>${department.department_name || 'N/A'}</td>
+                                                                <td>${project.project_name || 'N/A'}</td>
+                                                                <td>N/A</td>
+                                                            </tr>
+                                                        `);
+                                                    }
+                                                });
+                                            } else {
+                                                // If no projects, handle department data
+                                                tableBody.append(`
+                                                    <tr>
+                                                        <td>${company.company_name || 'N/A'}</td>
+                                                        <td>${company.company_address || 'N/A'}</td>
+                                                        <td>${company.company_email || 'N/A'}</td>
+                                                        <td>${company.company_phone || 'N/A'}</td>
+                                                        <td>${branch.branch_name || 'N/A'}</td>
+                                                        <td>${branch.city.city_name || 'N/A'}</td>
+                                                        <td>${branch.city.country.country_name || 'N/A'}</td>
+                                                        <td>${department.department_name || 'N/A'}</td>
+                                                        <td>N/A</td>
+                                                        <td>N/A</td>
+                                                    </tr>
+                                                `);
+                                            }
+                                        });
+                                    } else {
+                                        // If no departments, handle branch data
+                                        tableBody.append(`
+                                            <tr>
+                                                <td>${company.company_name || 'N/A'}</td>
+                                                <td>${company.company_address || 'N/A'}</td>
+                                                <td>${company.company_email || 'N/A'}</td>
+                                                <td>${company.company_phone || 'N/A'}</td>
+                                                <td>${branch.branch_name || 'N/A'}</td>
+                                                <td>${branch.city.city_name || 'N/A'}</td>
+                                                <td>${branch.city.country.country_name || 'N/A'}</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                        `);
+                                    }
+                                });
+                            } else {
+                                // If no branches, handle company data
+                                tableBody.append(`
+                                    <tr>
+                                        <td>${company.company_name || 'N/A'}</td>
+                                        <td>${company.company_address || 'N/A'}</td>
+                                        <td>${company.company_email || 'N/A'}</td>
+                                        <td>${company.company_phone || 'N/A'}</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+
+                                    </tr>
+                                `);
+                            }
+                        });
+
+                        // Initialize the DataTable after data is populated
+                        $('#companyTable').DataTable( {
+                "paging": true,       // Enable pagination
+                "searching": true,    // Enable search box
+                "ordering": true,     // Enable sorting
+                "info": true,         // Enable info display
+                });
+                    } else {
+                        console.error('Invalid data structure:', response);
+                    }
+                },
+                error: function(err) {
+                    console.error('Error fetching data:', err);
+                }
+            });
+        });
+            
+
+        
+            // Assuming the data is coming from an AJAX call
+          
+
+
+        });
+
+
+        
+        function ChangeRole(user_id){
+            var user_role = document.getElementById("user_id_"+user_id).value;
+            $.ajax({
+                url: '/admin/change_role',
+                type: 'POST',
+                contentType: 'application/json',  // Ensure JSON format
+                dataType: 'json',  // Expect JSON response
+                data: JSON.stringify({ user_id: user_id,user_role:user_role }),  // Convert data to JSON
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        title: "Changes done successfully",
+                        text: response.message,
+                        icon: "success"
+                        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        title: "Error",
+                        text: xhr.responseText,
+                        icon: "danger"
+                        });
+                }
+            });
+        }
+        function MakeAdmin(user_id) {
+            $.ajax({
+                url: '/admin/make_admin',
+                type: 'POST',
+                contentType: 'application/json',  // Ensure JSON format
+                dataType: 'json',  // Expect JSON response
+                data: JSON.stringify({ user_id: user_id }),  // Convert data to JSON
+                success: function(response) {
+                    console.log(response);
+                    alert(response.message);  // Show success message
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    alert("Error making admin: " + xhr.responseText);  // Show error message
+                }
+            });
+        }
+        function MakeActive(user_id) {
+            $.ajax({
+                url: '/admin/make_activate',
+                type: 'POST',
+                contentType: 'application/json',  // Ensure JSON format
+                dataType: 'json',  // Expect JSON response
+                data: JSON.stringify({ user_id: user_id }),  // Convert data to JSON
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        title: "Changes done successfully",
+                        text: response.message,
+                        icon: "success"
+                        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        title: "Error",
+                        text: xhr.responseText,
+                        icon: "danger"
+                        });
+                }
+
+            });
+        }
+
+        function Makeverified(user_id) {
+            $.ajax({
+                url: '/admin/make_verified',
+                type: 'POST',
+                contentType: 'application/json',  // Ensure JSON format
+                dataType: 'json',  // Expect JSON response
+                data: JSON.stringify({ user_id: user_id }),  // Convert data to JSON
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        title: "Changes done successfully",
+                        text: response.message,
+                        icon: "success"
+                        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        title: "Error",
+                        text: xhr.responseText,
+                        icon: "danger"
+                        });
+                }
+            });
+        }
+
+
+        
+    </script>
+
+{% endblock body %}
