@@ -105,3 +105,23 @@ def dashboard():
 
 
 
+
+@auth_bp.route('/customers', methods=['GET'])
+def get_active_verified_customers():
+    # Efficiently query the database with filters
+    customers = User.query.filter_by(roles='customer', is_active=True, is_verified=True).all()
+
+    # Convert SQLAlchemy objects to dictionaries for JSON response
+    customer_data = [
+        {
+            "id": customer.id,
+            "username": customer.username,
+            "email": customer.email,
+            "roles": customer.roles
+        } for customer in customers
+    ]
+
+    return jsonify(customer_data), 200
+
+
+

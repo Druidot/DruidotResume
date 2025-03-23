@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from services.admin.model import Branch, City, Company, Country, Department, Manager, ManagerProjectMapModel, Project
+from services.admin.model import Branch, City, Company, Country, Department, Manager, ManagerJobdescriptionModel, ManagerProjectMapModel, Project
 from services.login_and_registration.model import User
 from extensions import db
 
@@ -169,9 +169,9 @@ def add_project():
 # 7️⃣ Add Manager
 @admin_bp.route('/add_manager', methods=['POST'])
 def add_manager():
-    name = request.form['manager_name']
+    manager_user_id = request.form['manager_user_id']
 
-    manager = Manager(manager_name=name)
+    manager = Manager(manager_name='',user_id=manager_user_id)
     db.session.add(manager)
     db.session.commit()
 
@@ -183,6 +183,7 @@ def add_manager():
 def manager_map_project():
     manager_id = request.form['manager_id']
     project_id = request.form['project_id']
+    # user_manager_id = request.form['user_manager_id']
 
 
     manager_map_project = ManagerProjectMapModel(manager_id=manager_id, project_id=project_id)
@@ -295,8 +296,11 @@ def get_records(table):
         if isinstance(row, Project):
             row_data["department_name"] = row.department.department_name if row.department else None
 
+        if isinstance(row, Manager):
+            row_data["manager_name"] = row.user.username if row.user_id else None
+
         if isinstance(row, ManagerProjectMapModel):
-            row_data["manager_name"] = row.manager.manager_name if row.manager else None
+            row_data["manager_name"] = row.manager.user.username if row.manager else None
             row_data["project_name"] = row.project.project_name if row.project else None
 
         result.append(row_data)
@@ -352,7 +356,9 @@ def all_get_companies():
                         "managers": [
                             {
                                 "manager_id": manager.manager_id,
-                                "manager_name": manager.manager_name
+                                "manager_name": manager.user.username,
+                                "manager_user_id": manager.user_id
+
                             }
                             for manager in project.managers
                         ]
@@ -366,3 +372,110 @@ def all_get_companies():
         data.append(company_data)
 
     return jsonify({"companies": data}), 200
+
+
+
+
+@admin_bp.route('/get_all_records/<int:company_id>', methods=['GET'])
+def get_companie_info(company_id):
+    companies = Company.query.filter_by(company_id=company_id).all()
+    data = []
+
+    for company in companies:
+        company_data = {
+            "company_id": company.company_id,
+            "company_name": company.company_name,
+            "company_address": company.company_address,
+            "company_email": company.company_email,
+            "company_phone": company.company_phone,
+            "branches": []
+        }
+
+        for branch in company.branches:
+            branch_data = {
+                "branch_id": branch.branch_id,
+                "branch_name": branch.branch_name,
+                "city": {
+                    "city_id": branch.city.city_id,
+                    "city_name": branch.city.city_name,
+                    "country": {
+                        "country_id": branch.city.country.country_id,
+                        "country_name": branch.city.country.country_name,
+                        "country_code": branch.city.country.country_code
+                    }
+                },
+                "departments": []
+            }
+
+            for department in branch.departments:
+                department_data = {
+                    "department_id": department.department_id,
+                    "department_name": department.department_name,
+                    "projects": []
+                }
+
+                for project in department.projects:
+                    project_data = {
+                        "project_id": project.project_id,
+                        "project_name": project.project_name,
+                        "managers": [
+                            {
+                                "manager_id": manager.manager_id,
+                                "manager_name": manager.user.username,
+                                "manager_user_id": manager.user_id
+                            }
+                            for manager in project.managers
+                        ],
+                     "job_descriptions" : [
+                         {
+                             "job_description_id": job.id,
+                             "job_description": job.job_description,
+                             "created_by": job.created_by,
+                             "updated_by": job.updated_by,
+                             "remarks": job.remarks,
+                             "is_active": job.is_active
+                         }
+                         for job in project.job_descriptions
+                     ]
+                    }
+                    department_data["projects"].append(project_data)
+
+                branch_data["departments"].append(department_data)
+
+            company_data["branches"].append(branch_data)
+
+        data.append(company_data)
+
+    return jsonify({"companies": data}), 200
+
+@admin_bp.route('/company/details/<int:company_id>', methods=['GET'])
+@login_required
+def get_company_details(company_id):
+    return render_template('./frontend/company_details.html',company_id=company_id)
+
+
+
+
+@admin_bp.route('/add/job-description', methods=['POST'])
+def create_job_description():
+    data = request.json
+
+    try:
+        job = ManagerJobdescriptionModel(
+            manager_id=data['manager_id'],
+            project_id=data['project_id'],
+            job_description=data['job_description'],
+            created_by=data.get('created_by'),
+            updated_by=data.get('updated_by'),
+            remarks=data.get('remarks'),
+            is_active=data.get('is_active', True)
+        )
+
+        db.session.add(job)
+        db.session.commit()
+
+        return jsonify({"message": "Job description created successfully!", "id": job.id}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400

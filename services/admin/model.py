@@ -67,13 +67,20 @@ class Project(db.Model):
     department_id = db.Column(db.Integer, db.ForeignKey('department_mst.department_id'), nullable=False)
 
     managers = db.relationship('Manager', secondary='manager_project_map', back_populates='projects')
+    job_descriptions = db.relationship('ManagerJobdescriptionModel', backref='projects', lazy=True)
 
 # Manager Table
 class Manager(db.Model):
     __tablename__ = 'manager_mst'
+
     manager_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
     manager_name = db.Column(db.String(255), nullable=False)
 
+    # Relationship with User model
+    user = db.relationship('User', backref=db.backref('manager', uselist=False))
+
+    # Relationship with Project through association table 'manager_project_map'
     projects = db.relationship('Project', secondary='manager_project_map', back_populates='managers')
 
 # Many-to-Many Relationship: Manager ↔ Project
@@ -84,6 +91,42 @@ class ManagerProjectMapModel(db.Model):
 
     manager = db.relationship('Manager', backref='manager_project_maps')
     project = db.relationship('Project', backref='project_manager_maps')
+
+
+
+
+
+class ManagerJobdescriptionModel(db.Model):
+    __tablename__ = 'manager_project_job_map'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    manager_id = db.Column(db.Integer, nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_mst.project_id'), primary_key=True)
+
+    job_description = db.Column(db.Text, nullable=False)
+    
+    # New columns
+    is_active = db.Column(db.Boolean, default=True, nullable=False)  # Status flag
+    created_dt = db.Column(db.DateTime, default=db.func.now(), nullable=False)  # Creation timestamp
+    updated_dt = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now(), nullable=False)  # Last update timestamp
+    created_by = db.Column(db.String(50), nullable=True)  # Creator's identifier (e.g., username)
+    updated_by = db.Column(db.String(50), nullable=True)  # Last updater's identifier
+    remarks = db.Column(db.String(255), nullable=True)  # Additional notes or comments
+
+    # Composite Foreign Key
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            ['manager_id', 'project_id'],
+            ['manager_project_map.manager_id', 'manager_project_map.project_id']
+        ),
+    )
+
+    # Relationship with ManagerProjectMapModel
+    manager_project_map = db.relationship('ManagerProjectMapModel', backref='job_descriptions')
+    project = db.relationship('Project', backref='manager_project_job_maps')
+
+
+
 
    
 

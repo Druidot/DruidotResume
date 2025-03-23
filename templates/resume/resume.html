@@ -275,7 +275,7 @@
 
             <!-- Job Description -->
             <h5 class="">Job Description:</h5>
-            <textarea id="jobDescription" placeholder="Enter Job Description" rows="5" required oninput="jobDescriptionlength()"></textarea>
+            <textarea id="jobDescription" placeholder="Enter Job Description" rows="5" required oninput="jobDescriptionlength()">{{job_data.job_description}}</textarea>
             <span class="float-end" id="wordcountsection"><b><span id="wordcount" >0</span>/300 Words</b></span>
 
             <input type="file" id="jd_text" accept=".txt">
@@ -387,6 +387,7 @@
                                 <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z"/>
                               </svg>
                         </button>
+                        <button class="btn btn-sm btn-success" onclick="postCandidates()">Save Data</button>
 
                             
                     </div>
@@ -405,7 +406,7 @@
     </div>
 
     <script>
-
+    let candidates = [];
     function disableButton() {
             // Disable the submit button
             const button = document.getElementById('submitBtn');
@@ -579,7 +580,7 @@
 
                     const tableBody = document.createElement('tbody');
                     tableBody.id = "tablebody"
-
+                    candidates = data.resumes
 
                     data.resumes.forEach(resume => {
                         //eduaction_span = ``
@@ -856,10 +857,34 @@
             rows.forEach(row => table.tBodies[0].appendChild(row));
         }
 
+
+
+
+        async function postCandidates() {
+            
+
+    try {
+        const response = await fetch("/resume/add/candidates", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "candidates":candidates, "job_id": '{{job_data.id}}' })
+        });
+
+        const data = await response.json();
+        console.log("Response:", data);
+    } catch (error) {
+        console.error("Error posting candidates:", error);
+    }
+}
+
     </script>
 
     <!-- Bootstrap JS -->
 
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
