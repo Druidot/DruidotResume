@@ -255,7 +255,12 @@
                     <label class="form-label">Manager Name</label>
                     <input type="text" class="form-control" required name="manager_name">
                 </div> -->
-
+                <div class="mb-3">
+                    <label class="form-label">Company</label>
+                    <select class="form-select" id="managerCompany" name="company_id">
+                        <option>Select Company</option>
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Manager</label>
                     <select class="form-select" id="managerProjectMapUserManager" required name="manager_user_id">
@@ -284,9 +289,33 @@
         <div id="manager_project_map" class="tab-pane fade">
             <form action="/admin/add_manager_project_map" method="POST">
                 <div class="mb-3">
-                    <label class="form-label">Manager</label>
-                    <select class="form-select" id="managerProjectMapManager" name="manager_id">
-                        <option>Select Manager</option>
+                    <label class="form-label">Company</label>
+                    <select class="form-select" id="mpCompany" name="company_id" onchange="getcity(this.value)">
+                        <option>Select Company</option>
+                    </select>
+                </div>
+                <!-- <div class="mb-3">
+                    <label class="form-label">Country</label>
+                    <select class="form-select" id="mpCountry" name="city_country">
+                        <option>Select Country</option>
+                    </select>
+                </div> -->
+                <div class="mb-3">
+                    <label class="form-label">City</label>
+                    <select class="form-select" id="mpCity" name="city_id" onchange="getbranch(this.value, $('#mpCompany').val())">
+                        <option>Select City</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Branch</label>
+                    <select class="form-select" id="mpBranch" name="branch_id" onchange="getdepartment(this.value)">
+                        <option>Select Branch</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select class="form-select" id="mpDepartment" name="department_id" onchange="getproject(this.value)">
+                        <option>Select Department</option>
                     </select>
                 </div>
 
@@ -296,6 +325,15 @@
                         <option>Select Project</option>
                     </select>
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Manager</label>
+                    <select class="form-select" id="managerProjectMapManager" name="manager_id" >
+                        <option>Select Manager</option>
+                    </select>
+                </div>
+
+               
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
 
@@ -303,9 +341,14 @@
                 <table id="managerprojectTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
                     <thead class="table-primary">
                         <tr>
-                            <td>Manager</td>
+                            <td>Company Name</td>
+                            <td>City</td>
+                            <td>Branch</td>
+                            <td>Department</td>
                             <td>Project</td>
+                            <td>Manager</td>
                         </tr>
+                        
                     </thead>
                     <tbody id="managerprojectTablesbody">
                     
@@ -317,6 +360,101 @@
     </div>
 </div>
 
+
+<script>
+<!----------------------------------------------------------->
+// Function to get cities based on selected company and managers based company
+function getcity(companyId) {
+    
+
+    console.log("Selected Company ID:", companyId); // Log the selected company ID
+    $.ajax({
+        url: "/admin/get_records/city_by_company/" + companyId,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            console.log("Success:", response);
+            $("#mpCity").empty().append("<option>Select City</option>");
+            $.each(response.city_list, function(index, value) {
+                console.log(value);
+                $("#mpCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
+            });
+             $("#managerProjectMapManager").empty().append("<option>Select Manager</option>");
+            $.each(response.manager_list, function(index, value) {
+                console.log(value);
+                $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+
+// Function to get branches based on selected city
+function getbranch(cityId,companyId) {
+    console.log("Selected Company ID:", companyId); // Log the selected company ID
+    console.log("Selected City ID:", cityId); // Log the selected city ID
+    $.ajax({
+        url: "/admin/get_records/branch_by_city/" + cityId + "/" + companyId,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            console.log("Success:", response);
+            $("#mpBranch").empty().append("<option>Select Branch</option>");
+            $.each(response, function(index, value) {
+                console.log(value);
+                $("#mpBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+ 
+}
+// Function to get departments based on selected branch
+function getdepartment(branchId) {
+    console.log("Selected Branch ID:", branchId); // Log the selected branch ID
+    $.ajax({
+        url: "/admin/get_records/department_by_branch/" + branchId,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            console.log("Success:", response);
+            $("#mpDepartment").empty().append("<option>Select Department</option>");
+            $.each(response, function(index, value) {
+                console.log(value);
+                $("#mpDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+
+// Function to get projects based on selected department
+function getproject(departmentId) {
+    console.log("Selected Department ID:", departmentId); // Log the selected department ID
+    $.ajax({
+        url: "/admin/get_records/project_by_department/" + departmentId,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            console.log("Success:", response);
+            $("#managerProjectMapProject").empty().append("<option>Select Project</option>");
+            $.each(response, function(index, value) {
+                console.log(value);
+                $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+</script>
 
 <script>
     $.ajax({
@@ -348,6 +486,10 @@ $.ajax({
         $.each(response, function(index, value) {
             console.log(value);
             $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+            $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+            $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+
+            
             $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td></tr>");
         });
 
@@ -486,7 +628,10 @@ $.ajax({
         console.log("Success:", response);
         $.each(response, function(index, value) {
             console.log("manager=",value);
-            $("#managerprojectTablesbody").append("<tr><td>" + value.manager_name + "</td><td>" + value.project_name+ "</td></tr>");
+            $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td></tr>");
+            // $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td></tr>");
+
+            
         });
 
         // Handle response data

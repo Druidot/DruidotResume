@@ -169,9 +169,10 @@ def add_project():
 # 7️⃣ Add Manager
 @admin_bp.route('/add_manager', methods=['POST'])
 def add_manager():
+    company_id = request.form['company_id']
     manager_user_id = request.form['manager_user_id']
 
-    manager = Manager(manager_name='',user_id=manager_user_id)
+    manager = Manager(manager_name='',user_id=manager_user_id,company_id=company_id)
     db.session.add(manager)
     db.session.commit()
 
@@ -183,10 +184,18 @@ def add_manager():
 def manager_map_project():
     manager_id = request.form['manager_id']
     project_id = request.form['project_id']
+    company_id = request.form['company_id']
+    city_id = request.form['city_id']
+    branch_id = request.form['branch_id']
+    department_id = request.form['department_id']
+
+
+
+
     # user_manager_id = request.form['user_manager_id']
 
 
-    manager_map_project = ManagerProjectMapModel(manager_id=manager_id, project_id=project_id)
+    manager_map_project = ManagerProjectMapModel(manager_id=manager_id, project_id=project_id,company_id=company_id, city_id=city_id, branch_id=branch_id, department_id=department_id)
     db.session.add(manager_map_project)
     db.session.commit()
 
@@ -302,6 +311,12 @@ def get_records(table):
         if isinstance(row, ManagerProjectMapModel):
             row_data["manager_name"] = row.manager.user.username if row.manager else None
             row_data["project_name"] = row.project.project_name if row.project else None
+            row_data["company_name"] = row.company.company_name if row.company else None
+            row_data["city_name"] = row.city.city_name if row.city else None
+            row_data["branch_name"] = row.branch.branch_name if row.branch else None
+            row_data["department_name"] = row.department.department_name if row.department else None
+            
+
 
         result.append(row_data)
 
@@ -479,3 +494,36 @@ def create_job_description():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
+    
+
+
+@admin_bp.route('/get_records/city_by_company/<company_id>', methods=['GET'])
+def get_city_by_company(company_id):
+    cities = Branch.query.filter_by(company_id=company_id).all()
+    managers = Manager.query.filter_by(company_id=company_id).all()
+    if not cities and not managers:
+        return jsonify({"message": "No cities found for this company"}), 404
+    
+    city_list = [{"city_id": city.city_id, "city_name": city.city.city_name} for city in cities]
+    manager_list = [{"manager_id": manager.manager_id, "manager_name": manager.user.username} for manager in managers]
+
+
+    return jsonify({"city_list":city_list,"manager_list":manager_list}), 200
+
+@admin_bp.route('/get_records/branch_by_city/<city_id>/<company_id>', methods=['GET'])
+def get_branch_by_city(city_id,company_id):
+    branches = Branch.query.filter_by(city_id=city_id, company_id=company_id).all()
+    branch_list = [{"branch_id": branch.branch_id, "branch_name": branch.branch_name} for branch in branches]
+    return jsonify(branch_list), 200
+
+@admin_bp.route('/get_records/department_by_branch/<branch_id>', methods=['GET'])
+def get_department_by_branch(branch_id):
+    departments = Department.query.filter_by(branch_id=branch_id).all()
+    department_list = [{"department_id": department.department_id, "department_name": department.department_name} for department in departments]
+    return jsonify(department_list), 200
+
+@admin_bp.route('/get_records/project_by_department/<department_id>', methods=['GET'])
+def get_project_by_department(department_id):
+    projects = Project.query.filter_by(department_id=department_id).all()
+    project_list = [{"project_id": project.project_id, "project_name": project.project_name} for project in projects]
+    return jsonify(project_list), 200

@@ -74,6 +74,8 @@ def login():
         return redirect(url_for("auth.login_page"))
 
     user = authenticate_user(user_data.email, user_data.password)
+    if not user:
+        flash("Invalid credentials", "danger")
     if not user.is_verified:
         flash("Your Account is not verified by admin", "danger")  
     elif user and user.is_active:

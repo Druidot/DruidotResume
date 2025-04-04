@@ -72,25 +72,30 @@ class Project(db.Model):
 # Manager Table
 class Manager(db.Model):
     __tablename__ = 'manager_mst'
-
     manager_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
     manager_name = db.Column(db.String(255), nullable=False)
-
-    # Relationship with User model
+    company_id = db.Column(db.Integer, db.ForeignKey('company_mst.company_id'), nullable=False)
     user = db.relationship('User', backref=db.backref('manager', uselist=False))
-
-    # Relationship with Project through association table 'manager_project_map'
     projects = db.relationship('Project', secondary='manager_project_map', back_populates='managers')
 
 # Many-to-Many Relationship: Manager ↔ Project
 class ManagerProjectMapModel(db.Model):
     __tablename__ = 'manager_project_map'
+    company_id = db.Column(db.Integer, db.ForeignKey('company_mst.company_id'), nullable=False)
+    # country_id = db.Column(db.Integer, db.ForeignKey('country_mst.country_id'))
+    city_id = db.Column(db.Integer, db.ForeignKey('city_mst.city_id'))
+    branch_id = db.Column(db.Integer, db.ForeignKey('branch_mst.branch_id'))
+    department_id = db.Column(db.Integer, db.ForeignKey('department_mst.department_id'))
     manager_id = db.Column(db.Integer, db.ForeignKey('manager_mst.manager_id'), primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project_mst.project_id'), primary_key=True)
-
     manager = db.relationship('Manager', backref='manager_project_maps')
     project = db.relationship('Project', backref='project_manager_maps')
+    city = db.relationship('City', backref='project_manager_maps')
+    branch = db.relationship('Branch', backref='project_manager_maps')
+    department = db.relationship('Department', backref='project_manager_maps')
+    company = db.relationship('Company', backref='project_manager_maps')
+
 
 
 
@@ -100,6 +105,7 @@ class ManagerJobdescriptionModel(db.Model):
     __tablename__ = 'manager_project_job_map'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    
     manager_id = db.Column(db.Integer, nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project_mst.project_id'), primary_key=True)
 
