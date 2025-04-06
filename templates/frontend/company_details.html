@@ -3,129 +3,372 @@
 
 <div class="container mt-5" id="company-container">
     <!-- Content will be loaded dynamically -->
+    <div class="card mb-4 shadow-lg border-0 rounded-4">
+        <div class="card-body">
+            <h2 class="card-title text-primary">{{company_detail.company_name}}</h2>
+            <p class="card-text mb-1"><strong>Address:</strong> {{company_detail.company_address}}</p>
+            <p class="card-text mb-1"><strong>Email:</strong> {{company_detail.company_email}}</p>
+            <p class="card-text mb-4"><strong>Phone:</strong> {{company_detail.company_phone}}</p>
+        </div>
+    </div>
 </div>
+
+<!-- <div id="jobform" class="mt-4"></div>
+<div id="jobAccordion" class="mt-4"></div> -->
+<!-- Nav Tabs -->
+<ul class="nav nav-tabs mt-4" id="jobTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active fw-bold" id="add-tab" data-bs-toggle="tab" data-bs-target="#addTabContent" type="button" role="tab">Add Job</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold" id="view-tab" data-bs-toggle="tab" data-bs-target="#viewTabContent" type="button" role="tab">View Jobs</button>
+    </li>
+  </ul>
+  
+  <!-- Tab Content -->
+  <div class="tab-content mt-3" id="jobTabContent">
+    <div class="tab-pane fade show active" id="addTabContent" role="tabpanel">
+      <div id="jobform" class="mt-3"></div> <!-- Job Form -->
+    </div>
+    <div class="tab-pane fade" id="viewTabContent" role="tabpanel">
+      <div id="jobAccordion" class="mt-3"></div> <!-- Job Table -->
+    </div>
+  </div>
+  
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    async function fetchData() {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/admin/get_all_records/{{company_id}}');
-            const data = await response.json();
-            if (data && data.companies) {
-                data.companies.forEach(company => renderCompany(company));
-            } else {
-                console.error('Invalid data structure:', data);
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
+   async function fetchData() {
+    try {
+        const response = await fetch('/admin/get_records/city_by_company/{{company_id}}');
+        const data = await response.json();
+        if (data) {
+           renderCompany(data.city_list)
+        } else {
+            console.error('Invalid data structure:', data);
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+function showJDModal(description) {
+    const jdModalBody = document.getElementById('jdModalBody');
+    jdModalBody.innerHTML = description;
+    const jdModal = new bootstrap.Modal(document.getElementById('jdModal'));
+    jdModal.show();
+}
+function renderCompany(cityList) {
+    const container = document.getElementById('company-container');
+
+    const companyCard = `
+      <div class="card mb-4 shadow-sm p-4">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="citySelect" class="form-label">Select City</label>
+            <select class="form-select" id="citySelect">
+                <option value="" selected disabled>Choose a city</option>
+                ${cityList.map(city => `<option value="${city.city_id}">${city.city_name}</option>`).join('')}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="branchSelect" class="form-label">Select Branch</label>
+            <select class="form-select" id="branchSelect" disabled>
+                <option value="" selected disabled>Select a branch</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="departmentSelect" class="form-label">Select Department</label>
+            <select class="form-select" id="departmentSelect" disabled>
+                <option value="" selected disabled>Select a department</option>
+            </select>
+        </div>
+       
+         <div class="col-md-6">
+            <label for="projectSelect" class="form-label">Select Project</label>
+            <select class="form-select" id="projectSelect" disabled>
+                <option value="" selected disabled>Select a project</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- <div class="row">
+       
+        <div class="col-md-6">
+            <label for="managerSelect" class="form-label">Select Manager</label>
+            <select class="form-select" id="managerSelect" disabled>
+                <option value="" selected disabled>Select a manager</option>
+            </select>
+        </div>
+    </div>-->
+</div>
+
+
+
+
+    `;
+
+    container.innerHTML += companyCard;
+
+    const lastCard = container.lastElementChild;
+    const citySelect = lastCard.querySelector('#citySelect');
+    const branchSelect = lastCard.querySelector('#branchSelect');
+    const departmentSelect = lastCard.querySelector('#departmentSelect');
+    const managerSelect = lastCard.querySelector('#managerSelect');
+    const projectSelect = lastCard.querySelector('#projectSelect');
+
+    citySelect.addEventListener('change', async function () {
+        document.getElementById('jobAccordion').innerHTML = ''; // Clear previous job descriptions
+        document.getElementById('jobform').innerHTML = ''; // Clear previous job form
+        const cityId = this.value;
+        branchSelect.innerHTML = '<option selected disabled>Loading...</option>';
+        branchSelect.disabled = true;
+
+        try {
+            const response = await fetch(`/admin/get_records/branch_by_city/${cityId}/{{company_id}}`);
+            const branches = await response.json();
+
+            branchSelect.innerHTML = '<option selected disabled>Select a branch</option>';
+            branches.forEach(branch => {
+                const opt = document.createElement('option');
+                opt.value = branch.branch_id;
+                opt.textContent = branch.branch_name;
+                branchSelect.appendChild(opt);
+            });
+            branchSelect.disabled = false;
+        } catch (error) {
+            branchSelect.innerHTML = '<option selected disabled>Error loading branches</option>';
+        }
+    });
+
+    branchSelect.addEventListener('change', async function () {
+        const branchId = this.value;
+        departmentSelect.innerHTML = '<option selected disabled>Loading...</option>';
+        departmentSelect.disabled = true;
+
+        try {
+            const response = await fetch(`/admin/get_records/department_by_branch/${branchId}`);
+            const departments = await response.json();
+
+            departmentSelect.innerHTML = '<option selected disabled>Select a department</option>';
+            departments.forEach(dept => {
+                const opt = document.createElement('option');
+                opt.value = dept.department_id;
+                opt.textContent = dept.department_name;
+                departmentSelect.appendChild(opt);
+            });
+            departmentSelect.disabled = false;
+        } catch (error) {
+            departmentSelect.innerHTML = '<option selected disabled>Error loading departments</option>';
+        }
+    });
+
+    // departmentSelect.addEventListener('change', async function () {
+    //     const departmentId = this.value;
+    //     managerSelect.innerHTML = '<option selected disabled>Loading...</option>';
+    //     managerSelect.disabled = true;
+
+    //     try {
+    //         const response = await fetch(`/admin/get_records/manager_by_department/${departmentId}`);
+    //         const managers = await response.json();
+
+    //         managerSelect.innerHTML = '<option selected disabled>Select a manager</option>';
+    //         managers.forEach(manager => {
+    //             const opt = document.createElement('option');
+    //             opt.value = manager.manager_id;
+    //             opt.textContent = manager.manager_name;
+    //             managerSelect.appendChild(opt);
+    //         });
+    //         managerSelect.disabled = false;
+    //     } catch (error) {
+    //         managerSelect.innerHTML = '<option selected disabled>Error loading managers</option>';
+    //     }
+    // });
+
+    departmentSelect.addEventListener('change', async function () {
+        const departmentId = this.value;
+        projectSelect.innerHTML = '<option selected disabled>Loading...</option>';
+        projectSelect.disabled = true;
+
+        try {
+            const response = await fetch(`/admin/get_records/project_by_department/${departmentId}`);
+            const projects = await response.json();
+
+            projectSelect.innerHTML = '<option selected disabled>Select a project</option>';
+            projects.forEach(project => {
+                const opt = document.createElement('option');
+                opt.value = project.project_id;
+                opt.textContent = project.project_name;
+                projectSelect.appendChild(opt);
+            });
+            projectSelect.disabled = false;
+        } catch (error) {
+            projectSelect.innerHTML = '<option selected disabled>Error loading projects</option>';
+        }
+    });
+
+
+    projectSelect.addEventListener('change', async function () {
+    const projectId = this.value;
+    const accordionContainer = document.getElementById('jobAccordion');
+    accordionContainer.innerHTML = ''; // clear previous content
+    jobform.innerHTML = `
+  <div class="card shadow mb-3">
+    <div class="card-header bg-primary text-white fw-bold">
+      Add Job Description
+    </div>
+    <div class="card-body">
+      <div class="row mb-2">
+        <div class="col-md-12">
+          <label class="form-label fw-bold">Job Title:</label>
+          <input type="text" class="form-control" placeholder="Enter job title..." id="project_manager_jd_title_${projectId}" required>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Location:</label>
+          <input type="text" class="form-control" placeholder="Enter job location..." id="project_manager_jd_location_${projectId}" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Job Type:</label>
+          <select class="form-control" id="project_manager_jd_type_${projectId}" required>
+            <option value="">Select Job Type</option>
+            <option value="Full-Time">Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="Internship">Internship</option>
+            <option value="Contract">Contract</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Start Date:</label>
+          <input type="date" class="form-control" id="project_manager_jd_start_date_${projectId}" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold">End Date:</label>
+          <input type="date" class="form-control" id="project_manager_jd_end_date_${projectId}" required>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label fw-bold">Job Description:</label>
+        <textarea class="form-control" rows="4" placeholder="Enter job description..." id="project_manager_jd_${projectId}" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">Remarks:</label>
+        <textarea class="form-control" rows="2" placeholder="Enter any remarks..." id="project_manager_jd_remarks_${projectId}"></textarea>
+      </div>
+
+      <button class="btn btn-outline-primary w-100 fw-bold" onclick="createJobDescription('${projectId}')">Submit</button>
+    </div>
+  </div>
+`;
+
+; // clear previous content
+try {
+    const response = await fetch(`/admin/get_records/manager_project_job_map/${projectId}`);
+    const jobDescriptions = await response.json();
+
+    if (jobDescriptions.length === 0) {
+        accordionContainer.innerHTML = `<p class="text-muted">No job descriptions available for this project.</p>`;
+        return;
     }
 
-    function renderCompany(data) {
-        const container = document.getElementById('company-container');
+    const tableHTML = `
+        <div class="table-responsive">
+            <table id="jobTable" class="table table-bordered table-striped table-sm align-middle">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Code</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Description</th>
+                        <th>Remarks</th>
+                        <th>Created By</th>
+                        <th>Processed By</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${jobDescriptions.map((job, index) => {
+                        const fullDescription = job.job_description || 'N/A';
+                        const shortDesc = fullDescription.split(' ').slice(0, 20).join(' ') + (fullDescription.split(' ').length > 20 ? '...' : '');
+                        return `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${job.job_title || 'N/A'}</td>
+                                <td>${job.job_code || 'N/A'}</td>
+                                <td>${job.job_location || 'N/A'}</td>
+                                <td>${job.job_type || 'N/A'}</td>
+                                <td>${job.job_start_date || 'N/A'}</td>
+                                <td>${job.job_end_date || 'N/A'}</td>
+                                <td>
+                                    <span class="text-primary" style="cursor:pointer;" onclick="showJDModal(\`${fullDescription.replace(/`/g, '\\`')}\`)">
+                                        ${shortDesc}
+                                    </span>
+                                </td>
+                                <td>${job.remarks || 'N/A'}</td>
+                                <td>${job.created_by || 'N/A'}</td>
+                                <td>${job.processed_by || 'N/A'}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary" href="/resume/resume_extraction/${job.job_description_id}">Process</a>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        </div>
 
-        const companyCard = `
-            <div class="card mb-4 shadow-lg border-0 rounded-4">
-                <div class="card-body">
-                    <h2 class="card-title text-primary">${data.company_name}</h2>
-                    <p class="card-text mb-1"><strong>Address:</strong> ${data.company_address}</p>
-                    <p class="card-text mb-1"><strong>Email:</strong> ${data.company_email}</p>
-                    <p class="card-text mb-4"><strong>Phone:</strong> ${data.company_phone}</p>
+        <!-- Modal for JD -->
+        <div class="modal fade" id="jdModal" tabindex="-1" aria-labelledby="jdModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Full Job Description</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="jdModalBody">Loading...</div>
                 </div>
             </div>
-            <h4 class="text-secondary mb-4">Branches</h4>
-        `;
+        </div>
+    `;
 
-        container.innerHTML += companyCard;
+    accordionContainer.innerHTML = tableHTML;
 
-        data.branches.forEach(branch => {
-            const branchCard = document.createElement('div');
-            branchCard.className = 'card mb-4 shadow-sm border-0 rounded-4';
-
-            branchCard.innerHTML = `
-                <div class="card-body">
-                    <h5 class="card-title">${branch.branch_name} - ${branch.city.city_name}, ${branch.city.country.country_name}</h5>
-                    <h6 class="text-muted">Departments:</h6>
-                </div>
-            `;
-
-            branch.departments.forEach(dept => {
-                const deptContainer = document.createElement('div');
-                deptContainer.className = 'ps-3 mb-3';
-
-                deptContainer.innerHTML = `<h6><strong>${dept.department_name} Department</strong></h6>`;
-
-                dept.projects.forEach(proj => {
-                    const projectCard = document.createElement('div');
-                    projectCard.className = 'card mb-3 shadow-sm border rounded-3';
-
-                    // <div class="card-body">
-                    //         <h6 class="card-title">Project: ${proj.project_name}</h6>
-                    //         <p class="card-text">Manager: ${proj.managers.map(mgr => mgr.manager_name).join(', ')}</p>
-
-
-                            
-                    //         <label class="form-label">Add Job Description:</label>
-                    //         <textarea class="form-control mb-2" rows="2" placeholder="Enter job description..." id="project_manager_jd_${proj.project_id}"></textarea>
-                    //         <button class="btn btn-outline-primary" onclick="shareLink('${proj.project_name}')">Share Link</button>
-                    //         <button class="btn btn-outline-primary" onclick="createJobDescription('${proj.project_id}')">Submit</button>
-
-                    //     </div>
-
-                    projectCard.innerHTML = `
-                      
-
-
-                        <div class="card-body">
-                            <h6 class="card-title">Project: ${proj.project_name}</h6>
-                            <p class="card-text">Manager: ${proj.managers.map(mgr => mgr.manager_name).join(', ')}</p>
-
-                             <!-- Job Descriptions Accordion -->
-                            <div class="accordion mt-3" id="jobDescriptionAccordion">
-                                ${proj.job_descriptions.map((job, index) => `
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="heading${index}">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
-                                                Job Description ${index + 1} - ${job.remarks}
-                                            </button>
-                                        </h2>
-                                        <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#jobDescriptionAccordion">
-                                            <div class="accordion-body">
-                                                <p><strong>Created By:</strong> ${job.created_by}</p>
-                                                <p><strong>Updated By:</strong> ${job.updated_by}</p>
-                                                <p>${job.job_description.replace(/\n/g, '<br>')}</p>
-                                            </div>
-                                            <div class="accordion-body">
-                                                <a class="btn btn-outline-dark" href="/resume/resume_extraction/${job.job_description_id}" type="button">Process Resume</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <br>
-                            <br>
-
-
-                            <!-- Add Job Description Form -->
-                            <label class="form-label">Add Job Description:</label>
-                            <textarea class="form-control mb-2" rows="2" placeholder="Enter job description..." id="project_manager_jd_${proj.project_id}"></textarea>
-                            <button class="btn btn-outline-primary" onclick="shareLink('${proj.project_name}')">Share Link</button>
-                            <button class="btn btn-outline-primary" onclick="createJobDescription('${proj.project_id}')">Submit</button>
-
-                           
-                        </div>
-                    `;
-
-                    deptContainer.appendChild(projectCard);
-                });
-
-                branchCard.querySelector('.card-body').appendChild(deptContainer);
-            });
-
-            container.appendChild(branchCard);
+    // Initialize DataTable after inserting the table
+    $(document).ready(function () {
+        $('#jobTable').DataTable({
+            pageLength: 10,
+            lengthChange: false,
+            order: [],
         });
-    }
+    });
+} catch (error) {
+    console.error('Error loading job descriptions:', error);
+    accordionContainer.innerHTML = `<div class="alert alert-danger">Failed to load job descriptions.</div>`;
+}
+
+});
+
+
+
+
+}
+    // Add event listener to the project select dropdown
+
 
     function shareLink(projectName) {
         const link = `${window.location.href}?project=${encodeURIComponent(projectName)}`;
@@ -139,15 +382,39 @@
 
 
 async function createJobDescription(project_id, manager_id) {
-        const
-    jobData = {
-            manager_id: 1,
-            project_id: project_id,
-            job_description: document.getElementById(`project_manager_jd_${project_id}`).value,
-            created_by: 'admin',
-            updated_by: 'admin',
-            remarks: 'Urgent hiring'
-        }
+    const title = document.getElementById(`project_manager_jd_title_${project_id}`).value.trim();
+    const location = document.getElementById(`project_manager_jd_location_${project_id}`).value.trim();
+    const type = document.getElementById(`project_manager_jd_type_${project_id}`).value;
+    const startDate = document.getElementById(`project_manager_jd_start_date_${project_id}`).value;
+    const endDate = document.getElementById(`project_manager_jd_end_date_${project_id}`).value;
+    const description = document.getElementById(`project_manager_jd_${project_id}`).value.trim();
+    const remarks = document.getElementById(`project_manager_jd_remarks_${project_id}`).value.trim();
+
+    // Basic validation
+    if (!title || !location || !type || !startDate || !endDate || !description) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    // Date validation
+    if (new Date(startDate) > new Date(endDate)) {
+        alert("End date cannot be earlier than start date.");
+        return;
+    }
+
+    const jobData = {
+        manager_id: 1,
+        project_id: project_id,
+        job_title: title,
+        job_location: location,
+        job_type: type,
+        job_start_date: startDate,
+        job_end_date: endDate,
+        job_description: description,
+        remarks: remarks
+    };
+
+       
         try {
             const response = await fetch('/admin/add/job-description', {
                 method: 'POST',
@@ -161,6 +428,11 @@ async function createJobDescription(project_id, manager_id) {
 
             if (response.ok) {
                 console.log('Job description created:', result);
+                Swal.fire({
+                        title: result.job_code,
+                        text: result.message,
+                        icon: "success"
+                        });
             } else {
                 console.error('Error creating job description:', result.error);
             }

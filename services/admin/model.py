@@ -105,9 +105,15 @@ class ManagerJobdescriptionModel(db.Model):
     __tablename__ = 'manager_project_job_map'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    job_title = db.Column(db.String(255), nullable=False)
+    job_type = db.Column(db.String(50), nullable=False)  # e.g., 'Full-time', 'Part-time', 'Contract'
+    job_location = db.Column(db.String(255), nullable=False)  # Location of the job
+    job_code = db.Column(db.String(50), nullable=False)  # Unique job code or identifier
+    job_start_date = db.Column(db.Date, nullable=False)  # Start date of the job
+    job_end_date = db.Column(db.Date, nullable=True)  # End date of the job (if applicable)
     
     manager_id = db.Column(db.Integer, nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('project_mst.project_id'), primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_mst.project_id'), nullable=False)
 
     job_description = db.Column(db.Text, nullable=False)
     
@@ -117,7 +123,10 @@ class ManagerJobdescriptionModel(db.Model):
     updated_dt = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now(), nullable=False)  # Last update timestamp
     created_by = db.Column(db.String(50), nullable=True)  # Creator's identifier (e.g., username)
     updated_by = db.Column(db.String(50), nullable=True)  # Last updater's identifier
-    remarks = db.Column(db.String(255), nullable=True)  # Additional notes or comments
+    resume_process_count = db.Column(db.Integer, default=0)  # Count of resumes processed for this job description
+    resume_shortlist_count = db.Column(db.Integer, default=0)  # Count of resumes shortlisted for this job description
+    remarks = db.Column(db.Text, nullable=True)  # Additional remarks or comments
+
 
     # Composite Foreign Key
     __table_args__ = (

@@ -69,6 +69,8 @@
                                     <th>Company Address</th>
                                     <th>Email</th>
                                     <th>Phone</th>
+                                    <td>Action</td>
+
                                 </tr>
                             </thead>
                             <tbody id="companyTablesbody">
@@ -83,6 +85,7 @@
         </div>
 
         <!-- Country Form -->
+         ed
         <div id="country" class="tab-pane fade">
             <form action="/admin/add_country" method="POST">
                 <div class="mb-3">
@@ -102,6 +105,8 @@
                         <tr>
                             <th>Country Name</th>
                             <th>Country Code</th>
+                            <td>Action</td>
+
                         </tr>
                     </thead>
                     <tbody id="countryTablesbody">
@@ -134,6 +139,8 @@
                         <tr>
                             <th>City Name</th>
                             <th>Country</th>
+                            <td>Action</td>
+
                         </tr>
                     </thead>
                     <tbody id="cityTablesbody">
@@ -173,6 +180,8 @@
                             <td>Branch Name</td>
                             <td>Company</td>
                             <td>City</td>
+                            <td>Action</td>
+
                         </tr>
                     </thead>
                     <tbody id="branchTablesbody">
@@ -205,6 +214,8 @@
                         <tr>
                             <td>Department Name</td>
                             <td>Branch</td>
+                            <td>Action</td>
+
                         </tr>
                     </thead>
                     <tbody id="departmentTablesbody">
@@ -237,6 +248,8 @@
                         <tr>
                             <td>Project Name</td>
                             <td>Department</td>
+                            <td>Action</td>
+
                         </tr>
                     </thead>
                     <tbody id="projectTablesbody">
@@ -275,6 +288,8 @@
                     <thead class="table-primary">
                         <tr>
                             <td>Manager Name</td>
+                            <td>Action</td>
+
                         </tr>
                     </thead>
                     <tbody id="managerTablesbody">
@@ -347,6 +362,8 @@
                             <td>Department</td>
                             <td>Project</td>
                             <td>Manager</td>
+                            <td>Action</td>
+
                         </tr>
                         
                     </thead>
@@ -466,7 +483,7 @@ function getproject(departmentId) {
         $.each(response, function(index, value) {
             console.log(value);
             $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
-            $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td></tr>");
+            $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td> <td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
         });
 
         // Handle response data
@@ -490,7 +507,7 @@ $.ajax({
             $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
 
             
-            $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td></tr>");
+            $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
         });
 
         // Handle response data
@@ -510,7 +527,7 @@ $.ajax({
         $.each(response, function(index, value) {
             console.log(value);
             $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
-            $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td></tr>");
+            $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
         });
 
         // Handle response data
@@ -529,7 +546,7 @@ $.ajax({
         $.each(response, function(index, value) {
             console.log(value);
             $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
-            $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td></tr>");
+            $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
         });
 
         // Handle response data
@@ -549,7 +566,7 @@ $.ajax({
         $.each(response, function(index, value) {
             console.log(value);
             $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
-            $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td></tr>");
+            $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
         });
 
         // Handle response data
@@ -569,7 +586,7 @@ $.ajax({
         $.each(response, function(index, value) {
             console.log(value);
             $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
-            $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td></tr>");
+            $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
 
             
         });
@@ -591,7 +608,7 @@ $.ajax({
         $.each(response, function(index, value) {
             console.log(value);
             $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
-            $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td></tr>");
+            $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
         });
 
         // Handle response data
@@ -628,7 +645,7 @@ $.ajax({
         console.log("Success:", response);
         $.each(response, function(index, value) {
             console.log("manager=",value);
-            $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td></tr>");
+            $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
             // $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td></tr>");
 
             

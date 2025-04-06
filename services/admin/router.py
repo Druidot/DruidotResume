@@ -1,3 +1,6 @@
+from datetime import datetime
+import random
+import uuid
 from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from services.admin.model import Branch, City, Company, Country, Department, Manager, ManagerJobdescriptionModel, ManagerProjectMapModel, Project
@@ -466,30 +469,40 @@ def get_companie_info(company_id):
 @admin_bp.route('/company/details/<int:company_id>', methods=['GET'])
 @login_required
 def get_company_details(company_id):
-    return render_template('./frontend/company_details.html',company_id=company_id)
+    company_detail= Company.query.filter_by(company_id=company_id).first()
+    return render_template('./frontend/company_details.html',company_id=company_id,company_detail=company_detail)
 
 
-
+def generate_job_code():
+    return f"JOB-{uuid.uuid4().hex[:8].upper()}"
 
 @admin_bp.route('/add/job-description', methods=['POST'])
+@login_required
 def create_job_description():
     data = request.json
+    job_code = generate_job_code()
 
     try:
         job = ManagerJobdescriptionModel(
             manager_id=data['manager_id'],
             project_id=data['project_id'],
             job_description=data['job_description'],
-            created_by=data.get('created_by'),
-            updated_by=data.get('updated_by'),
+            job_title=data['job_title'],
+            created_by=current_user.username,
+            updated_by=current_user.username,
             remarks=data.get('remarks'),
-            is_active=data.get('is_active', True)
+            is_active=data.get('is_active', True),
+            job_type=data.get('job_type'),
+            job_location=data.get('job_location'),
+            job_code=job_code,
+            job_start_date = datetime.strptime(data.get('job_start_date'), '%Y-%m-%d').date(),
+            job_end_date = datetime.strptime(data.get('job_end_date'), '%Y-%m-%d').date()
         )
 
         db.session.add(job)
         db.session.commit()
 
-        return jsonify({"message": "Job description created successfully!", "id": job.id}), 201
+        return jsonify({"message": "Job description created successfully!", "id": job.id,"job_code":job_code}), 201
 
     except Exception as e:
         db.session.rollback()
@@ -527,3 +540,31 @@ def get_project_by_department(department_id):
     projects = Project.query.filter_by(department_id=department_id).all()
     project_list = [{"project_id": project.project_id, "project_name": project.project_name} for project in projects]
     return jsonify(project_list), 200
+
+@admin_bp.route('/get_records/manager_by_project/<project_id>', methods=['GET'])
+def get_manager_by_project(project_id):
+    managers = ManagerProjectMapModel.query.filter_by(project_id=project_id).all()
+    manager_list = [{"manager_id": manager.manager_id, "manager_name": manager.manager.user.username} for manager in managers]
+    return jsonify(manager_list), 200
+
+@admin_bp.route('/get_records/manager_project_job_map/<project_id>', methods=['GET'])
+def get_manager_project_job_map(project_id):
+    job_descriptions = ManagerJobdescriptionModel.query.filter_by(project_id=project_id).all()
+    job_description_list = [
+        {
+            "job_description_id": job.id,
+            "job_description": job.job_description,
+            "job_title": job.job_title,
+            "created_by": job.created_by,
+            "updated_by": job.updated_by,
+            "remarks": job.remarks,
+            "is_active": job.is_active,
+            "job_code": job.job_code,
+            "job_start_date": job.job_start_date.strftime('%Y-%m-%d') if job.job_start_date else None,
+            "job_end_date": job.job_end_date.strftime('%Y-%m-%d') if job.job_end_date else None
+        }
+        for job in job_descriptions
+    ]
+    if not job_description_list:
+        return jsonify({"message": "No job descriptions found for this project"}), 404
+    return jsonify(job_description_list), 200
