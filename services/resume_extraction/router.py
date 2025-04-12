@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, jsonify, redirect, render_template, request, send_from_directory, url_for
 from flask_pydantic import validate
 from flask_jwt_extended import create_access_token
 from pydantic import ValidationError
@@ -27,6 +27,61 @@ resume_bp = Blueprint("resume", __name__, url_prefix="/resume")
 def resume_extraction(job_id):
     job_data = ManagerJobdescriptionModel.query.filter_by(id=job_id).first()
     return render_template('./resume/resume.html',job_data=job_data)
+
+@resume_bp.route("/resume_grid/<int:job_id>", methods=["GET"])
+@login_required
+def resume_grid(job_id):
+    job_data = CandidateModel.query.filter_by(job_description_id=job_id).all()
+    return render_template('./resume/canditate_grid.html',job_data=job_data)
+
+@resume_bp.route("/candidate_information/<int:id>", methods=["GET"])
+@login_required
+def candidate_information(id):
+    candidate_information_data = CandidateModel.query.filter_by(id=id).first()
+    return render_template('./resume/candidate_information.html', candidate_information_data=candidate_information_data)
+
+
+
+@resume_bp.route('/candidate_resume/<int:candidate_id>', methods=['GET'])
+@login_required
+def serve_resume(candidate_id):
+    candidate_information_data = CandidateModel.query.filter_by(id=candidate_id).first()
+    if not candidate_information_data:
+        abort(404, description="Candidate not found")
+    
+    resume_filename = candidate_information_data.resume_file
+    file_path = os.path.join(resume_filename)
+
+    if os.path.isfile(file_path):
+        file_name = resume_filename.split('/')[-1]
+        return send_from_directory(Config.UPLOAD_FOLDER,file_name, as_attachment=True)
+    else:
+        abort(404, description=f"Resume file not found {file_path}")
+
+@resume_bp.route('/select_candidate', methods=['POST'])
+def select_candidate():
+    data = request.get_json()
+    candidate_id = data.get('candidate_id')
+    job_description_id = data.get('job_description_id')
+
+    try:
+        candidate = CandidateModel.query.filter_by(id=candidate_id, job_description_id=job_description_id).first()
+
+        if not candidate:
+            return jsonify({"error": "Candidate not found"}), 404
+        if  candidate.candidate_selected:
+            candidate.candidate_selected = False
+            status = "unselected"
+        else:
+            candidate.candidate_selected = True
+            status = "selected"
+        db.session.commit()
+
+        return jsonify({"message": f"Candidate {status} successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
 
 @resume_bp.route('/process_resumes', methods=['POST'])
 def process_resumes():
@@ -81,6 +136,15 @@ def add_candidates():
     job_description_id = request.get_json().get('job_id')
     try:
         for data in data:
+            existing_candidate = CandidateModel.query.filter_by(
+                name=data.get('Name'),
+                phone_number=data.get('Mobile', [''])[0] if data.get('Mobile') else '',
+                email=data.get('Email'),
+                job_description_id = job_description_id
+            ).first()
+            if existing_candidate:
+                # If the candidate already exists, skip adding them
+                continue
             new_candidate = CandidateModel(
                 name=data.get('Name'),
                 phone_number=data.get('Mobile', [''])[0] if data.get('Mobile') else '',
@@ -104,6 +168,11 @@ def add_candidates():
             )
 
             db.session.add(new_candidate)
+            job_data = ManagerJobdescriptionModel.query.filter_by(id=job_description_id).first()
+            if job_data:
+                job_data.resume_process_count += 1
+                job_data.updated_dt = db.func.now()
+                job_data.updated_by = current_user.username
             db.session.commit()
 
         return jsonify({"message": "Candidate added successfully"}), 201

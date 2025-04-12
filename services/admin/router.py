@@ -561,7 +561,12 @@ def get_manager_project_job_map(project_id):
             "is_active": job.is_active,
             "job_code": job.job_code,
             "job_start_date": job.job_start_date.strftime('%Y-%m-%d') if job.job_start_date else None,
-            "job_end_date": job.job_end_date.strftime('%Y-%m-%d') if job.job_end_date else None
+            "job_end_date": job.job_end_date.strftime('%Y-%m-%d') if job.job_end_date else None,
+            "job_location": job.job_location,
+            "job_type": job.job_type,
+            "manager_id": job.manager_id,
+            "project_id": job.project_id,
+            "resume_process_count": job.resume_process_count,
         }
         for job in job_descriptions
     ]

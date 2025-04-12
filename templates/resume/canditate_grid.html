@@ -1,0 +1,99 @@
+{% extends './frontend/base.html' %}
+{% block body %}
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Candidate List</h2>
+      <!-- <a href="#" class="btn btn-success">+ Add New Candidate</a> -->
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered align-middle mb-0">
+            <thead class="table-primary">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Score</th>
+                <th scope="col">Actions</th>
+                <th scope="col">Selected <br>Candidate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Sample row 1 -->
+               {% for data in job_data%}
+               <tr>
+                <td>{{loop.index}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.phone_number}}</td>
+                <td>{{data.experience_years}} Years {{data.experience_months}} Months</td>
+                <td><span class="badge bg-success">{{data.score}}%</span></td>
+                <td>
+                  <a href="/resume/candidate_information/{{data.id}}" class="btn btn-sm btn-outline-primary">View</a>
+                </td>
+                <td>
+                    <button onclick="SelectCandidate('{{data.id}}','{{data.job_description_id}}')" class="btn btn-sm btn-{% if data.candidate_selected %}success{%else%}outline-secondary{%endif%}">{% if data.candidate_selected%} Selected {%else%} select {%endif%}</a>
+                </td>
+
+
+               </tr>
+               {%endfor%}
+           
+              <!-- Add more rows dynamically here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    function SelectCandidate(candidateId, jobDescriptionId) {
+        // Make an AJAX request to the server to select the candidate
+        //select and unselect candidate
+        $.ajax({
+            url: '/resume/select_candidate',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',  // Expect JSON response
+            data: JSON.stringify( {
+                candidate_id: candidateId,
+                job_description_id: jobDescriptionId
+            }),  // Send data as JSON string
+      
+            success: function(response) {
+                // Handle success response
+           
+                //reload url
+                window.location.reload();   
+           
+               
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while selecting the candidate.',
+                });
+            }
+        });
+
+    }
+</script>
+{%endblock%}
+
+

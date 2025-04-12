@@ -298,7 +298,8 @@ try {
                         <th>Remarks</th>
                         <th>Created By</th>
                         <th>Processed By</th>
-                        <th>Action</th>
+                        <th>Processed count</th>
+                        <th colspan='2'>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -321,9 +322,14 @@ try {
                                 </td>
                                 <td>${job.remarks || 'N/A'}</td>
                                 <td>${job.created_by || 'N/A'}</td>
-                                <td>${job.processed_by || 'N/A'}</td>
+                                <td>${job.updated_by || 'N/A'}</td>
+                
+                                <td> ${job.resume_process_count || 'N/A'}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-outline-primary" href="/resume/resume_extraction/${job.job_description_id}">Process</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="/resume/resume_extraction/${job.job_description_id}">Process</a><br>
+                                </td>
+                                <td>
+                                    ${job.resume_process_count > 0 ? `<a class="btn btn-sm btn-outline-success" href="/resume/resume_grid/${job.job_description_id}">view candidates</a>` : ''}
                                 </td>
                             </tr>
                         `;

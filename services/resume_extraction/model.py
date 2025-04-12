@@ -4,8 +4,8 @@ class CandidateModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    phone_number = db.Column(db.String(15), nullable=False, unique=True)
-    email = db.Column(db.String(100), nullable=False, unique=True)
+    phone_number = db.Column(db.String(15), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     experience_years = db.Column(db.Integer, nullable=False)
     experience_months = db.Column(db.Integer, nullable=False)
     skills = db.Column(db.Text, nullable=False)
@@ -25,6 +25,8 @@ class CandidateModel(db.Model):
 
     created_dt = db.Column(db.DateTime, default=db.func.now(), nullable=False)
     updated_dt = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now(), nullable=False)
+    candidate_status = db.Column(db.String(50), default="New",nullable=False)  # New, In Progress, Completed, Rejected
+    candidate_selected = db.Column(db.Boolean, default=False)  # True if selected for the job
 
     # Relationship
     job_description_id = db.Column(db.Integer, db.ForeignKey('manager_project_job_map.id'), nullable=False)  # FK to ManagerJobdescriptionModel

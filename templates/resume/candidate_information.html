@@ -1,0 +1,55 @@
+{% extends './frontend/base.html' %}
+{% block body %}
+  <style>
+    .profile-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <a href="candidates.html" class="btn btn-secondary mb-3">← Back to List</a>
+  <div class="profile-card">
+    <h3 class="text-center mb-4">Candidate Profile</h3>
+    
+    <div class="row mb-2">
+      <div class="col-md-6"><strong>ID:</strong>{{candidate_information_data.id}}</div>
+      <div class="col-md-6"><strong>Name:</strong> {{candidate_information_data.name}}</div>
+      <div class="col-md-6"><strong>Phone:</strong> {{candidate_information_data.phone_number}}</div>
+      <div class="col-md-6"><strong>Email:</strong> {{candidate_information_data.email}}</div>
+      <div class="col-md-6"><strong>Experience:</strong>{{candidate_information_data.experience_years}} years {{candidate_information_data.experience_months}} months</div>
+      <div class="col-md-6"><strong>Score:</strong> {{candidate_information_data.score}} %</div>
+      <div class="col-md-6"><strong>Location:</strong> {{candidate_information_data.location}}</div>
+    </div>
+
+    <hr>
+    <h5>Skills</h5>
+    <p>{{candidate_information_data.skills}}</p>
+
+    <h5>Certifications</h5>
+    <p>{{candidate_information_data.certifications}}</p>
+
+    <h5>Education</h5>
+    <p><strong>Degree:</strong> {{candidate_information_data.education_degree}}<br>
+       <strong>University:</strong> {{candidate_information_data.education_university}}<br>
+       <strong>Duration:</strong> {{candidate_information_data.education_duration}}<br>
+       <strong>Grade:</strong> {{candidate_information_data.education_grade}}<br>
+    </p>
+
+    <h5>Project</h5>
+    <p><strong>Title:</strong> {{candidate_information_data.project_title}}<br>
+       <strong>Description:</strong> {{candidate_information_data.project_description}}<br>
+    </p>
+
+    <h5>Resume</h5>
+    <a href="/resume/candidate_resume/{{candidate_information_data.id}}" class="btn btn-outline-primary btn-sm" target="_blank">View Resume</a>
+
+    <p class="mt-4 text-muted">Created: {{candidate_information_data.job_description.created_dt}} | Updated: {{candidate_information_data.job_description.updated_dt}}<br>
+    <strong>Job Description ID:</strong> {{candidate_information_data.job_description.job_code}}</p>
+  </div>
+</div>
+{%endblock%}
+
