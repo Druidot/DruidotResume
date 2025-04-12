@@ -85,7 +85,6 @@
         </div>
 
         <!-- Country Form -->
-         ed
         <div id="country" class="tab-pane fade">
             <form action="/admin/add_country" method="POST">
                 <div class="mb-3">
@@ -382,280 +381,258 @@
 <!----------------------------------------------------------->
 // Function to get cities based on selected company and managers based company
 function getcity(companyId) {
-    
+    CallAPI("/admin/get_records/city_by_company/" + companyId, 'GET', {
+            }, function(response) {
+                response = response.data
+                $("#mpCity").empty().append("<option>Select City</option>");
+                $.each(response.city_list, function(index, value) {
+                    $("#mpCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
+                });
+                $("#managerProjectMapManager").empty().append("<option>Select Manager</option>");
+                $.each(response.manager_list, function(index, value) {
+                    $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
+                });
+            }, function(xhr, status, error) {
+            });
 
-    console.log("Selected Company ID:", companyId); // Log the selected company ID
-    $.ajax({
-        url: "/admin/get_records/city_by_company/" + companyId,
-        type: "GET",
-        dataType: "json",
-        success: function(response) {
-            console.log("Success:", response);
-            $("#mpCity").empty().append("<option>Select City</option>");
-            $.each(response.city_list, function(index, value) {
-                console.log(value);
-                $("#mpCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
-            });
-             $("#managerProjectMapManager").empty().append("<option>Select Manager</option>");
-            $.each(response.manager_list, function(index, value) {
-                console.log(value);
-                $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error);
-        }
-    });
 }
 
 // Function to get branches based on selected city
 function getbranch(cityId,companyId) {
-    console.log("Selected Company ID:", companyId); // Log the selected company ID
-    console.log("Selected City ID:", cityId); // Log the selected city ID
-    $.ajax({
-        url: "/admin/get_records/branch_by_city/" + cityId + "/" + companyId,
-        type: "GET",
-        dataType: "json",
-        success: function(response) {
-            console.log("Success:", response);
-            $("#mpBranch").empty().append("<option>Select Branch</option>");
-            $.each(response, function(index, value) {
-                console.log(value);
-                $("#mpBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+    CallAPI("/admin/get_records/branch_by_city/" + cityId + "/" + companyId, 'GET', {
+            }, function(response) {
+                response = response.data
+                $("#mpBranch").empty().append("<option>Select Branch</option>");
+                $.each(response, function(index, value) {
+                    console.log(value);
+                    $("#mpBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+                });
+            }, function(xhr, status, error) {
             });
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error);
-        }
-    });
- 
 }
+   
+ 
+
 // Function to get departments based on selected branch
 function getdepartment(branchId) {
-    console.log("Selected Branch ID:", branchId); // Log the selected branch ID
-    $.ajax({
-        url: "/admin/get_records/department_by_branch/" + branchId,
-        type: "GET",
-        dataType: "json",
-        success: function(response) {
-            console.log("Success:", response);
-            $("#mpDepartment").empty().append("<option>Select Department</option>");
-            $.each(response, function(index, value) {
-                console.log(value);
-                $("#mpDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+    CallAPI("/admin/get_records/department_by_branch/" + branchId, 'GET', {
+            }, function(response) {
+                response = response.data
+                $("#mpDepartment").empty().append("<option>Select Department</option>");
+                $.each(response, function(index, value) {
+                    console.log(value);
+                    $("#mpDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+                });
+            }, function(xhr, status, error) {
             });
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error);
-        }
-    });
+   
 }
 
 // Function to get projects based on selected department
 function getproject(departmentId) {
-    console.log("Selected Department ID:", departmentId); // Log the selected department ID
-    $.ajax({
-        url: "/admin/get_records/project_by_department/" + departmentId,
-        type: "GET",
-        dataType: "json",
-        success: function(response) {
-            console.log("Success:", response);
-            $("#managerProjectMapProject").empty().append("<option>Select Project</option>");
-            $.each(response, function(index, value) {
-                console.log(value);
-                $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+    CallAPI("/admin/get_records/project_by_department/" + departmentId, 'GET', {
+            }, function(response) {
+                response = response.data
+                $("#managerProjectMapProject").empty().append("<option>Select Project</option>");
+                $.each(response, function(index, value) {
+                    console.log(value);
+                    $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+                });
+            }, function(xhr, status, error) {
             });
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error);
-        }
-    });
+   
 }
 </script>
 
 <script>
-    $.ajax({
-    url: "/admin/get_records/country",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
-            $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td> <td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-        });
+//     $.ajax({
+//     url: "/admin/get_records/country",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
+//             $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td> <td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//         });
 
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
-
-
-$.ajax({
-    url: "/admin/get_records/company",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-            $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-            $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-
-            
-            $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-        });
-
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
 
 
-$.ajax({
-    url: "/admin/get_records/city",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
-            $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-        });
-
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
-
-$.ajax({
-    url: "/admin/get_records/branch",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
-            $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-        });
-
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
 
 
-$.ajax({
-    url: "/admin/get_records/department",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
-            $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-        });
-
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
 
 
-$.ajax({
-    url: "/admin/get_records/project",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
-            $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+// $.ajax({
+
+  
+//     url: "/admin/get_records/company",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+//             $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+//             $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
 
             
-        });
+//             $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//         });
 
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
-
-
-$.ajax({
-    url: "/admin/get_records/manager",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log(value);
-            $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
-            $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-        });
-
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
 
 
-$.ajax({
-    url: "/auth/customers",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            $("#managerProjectMapUserManager").append("<option value='" + value.id + "'>" + value.username + "</option>");
-            // $("#managerTablesbody").append("<tr><td>" + value.username + "</td></tr>");
-        });
+// $.ajax({
+//     url: "/admin/get_records/city",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
+//             $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//         });
 
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
 
-$.ajax({
-    url: "/admin/get_records/ManagerProjectMap",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-        console.log("Success:", response);
-        $.each(response, function(index, value) {
-            console.log("manager=",value);
-            $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-            // $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td></tr>");
+// $.ajax({
+//     url: "/admin/get_records/branch",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+//             $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//         });
+
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
+
+
+// $.ajax({
+//     url: "/admin/get_records/department",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+//             $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//         });
+
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
+
+
+// $.ajax({
+//     url: "/admin/get_records/project",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+//             $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
 
             
-        });
+//         });
 
-        // Handle response data
-    },
-    error: function(xhr, status, error) {
-        console.error("Error:", error);
-    }
-});
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
+
+
+// $.ajax({
+//     url: "/admin/get_records/manager",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log(value);
+//             $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
+//             $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//         });
+
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
+
+
+// $.ajax({
+//     url: "/auth/customers",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             $("#managerProjectMapUserManager").append("<option value='" + value.id + "'>" + value.username + "</option>");
+//             // $("#managerTablesbody").append("<tr><td>" + value.username + "</td></tr>");
+//         });
+
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
+
+// $.ajax({
+//     url: "/admin/get_records/ManagerProjectMap",
+//     type: "GET",
+//     dataType: "json",
+//     success: function(response) {
+//         console.log("Success:", response);
+//         $.each(response, function(index, value) {
+//             console.log("manager=",value);
+//             $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+//             // $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td></tr>");
+
+            
+//         });
+
+//         // Handle response data
+//     },
+//     error: function(xhr, status, error) {
+//         console.error("Error:", error);
+//     }
+// });
 
  </script>

@@ -40,18 +40,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-   async function fetchData() {
-    try {
-        const response = await fetch('/admin/get_records/city_by_company/{{company_id}}');
-        const data = await response.json();
-        if (data) {
-           renderCompany(data.city_list)
-        } else {
-            console.error('Invalid data structure:', data);
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
+   function fetchData() {
+    CallAPI("/admin/get_records/city_by_company/{{company_id}}", 'GET', {
+        }, function(response) {
+            response = response.data
+            renderCompany(response.city_list)
+            
+        }, function(xhr, status, error) {
+        });
 }
 function showJDModal(description) {
     const jdModalBody = document.getElementById('jdModalBody');
@@ -128,43 +124,44 @@ function renderCompany(cityList) {
         branchSelect.innerHTML = '<option selected disabled>Loading...</option>';
         branchSelect.disabled = true;
 
-        try {
-            const response = await fetch(`/admin/get_records/branch_by_city/${cityId}/{{company_id}}`);
-            const branches = await response.json();
-
-            branchSelect.innerHTML = '<option selected disabled>Select a branch</option>';
-            branches.forEach(branch => {
-                const opt = document.createElement('option');
-                opt.value = branch.branch_id;
-                opt.textContent = branch.branch_name;
-                branchSelect.appendChild(opt);
+        CallAPI("/admin/get_records/branch_by_city/" + cityId + "/{{company_id}}", 'GET', {
+            }, function(response) {
+                response = response.data
+                branchSelect.innerHTML = '<option selected disabled>Select a branch</option>'
+                response.forEach(branch => {
+                    const opt = document.createElement('option')
+                    opt.value = branch.branch_id
+                    opt.textContent = branch.branch_name
+                    branchSelect.appendChild(opt)
+                })
+                branchSelect.disabled = false
+            }, function(xhr, status, error) {
+                branchSelect.innerHTML = '<option selected disabled>Error loading branches</option>'
             });
-            branchSelect.disabled = false;
-        } catch (error) {
-            branchSelect.innerHTML = '<option selected disabled>Error loading branches</option>';
-        }
+
+       
     });
 
     branchSelect.addEventListener('change', async function () {
         const branchId = this.value;
         departmentSelect.innerHTML = '<option selected disabled>Loading...</option>';
         departmentSelect.disabled = true;
-
-        try {
-            const response = await fetch(`/admin/get_records/department_by_branch/${branchId}`);
-            const departments = await response.json();
-
-            departmentSelect.innerHTML = '<option selected disabled>Select a department</option>';
-            departments.forEach(dept => {
-                const opt = document.createElement('option');
-                opt.value = dept.department_id;
-                opt.textContent = dept.department_name;
-                departmentSelect.appendChild(opt);
+        CallAPI("/admin/get_records/department_by_branch/" + branchId, 'GET', {
+            }, function(response) {
+                response = response.data
+                departmentSelect.innerHTML = '<option selected disabled>Select a department</option>'
+                response.forEach(dept => {
+                    const opt = document.createElement('option')
+                    opt.value = dept.department_id
+                    opt.textContent = dept.department_name
+                    departmentSelect.appendChild(opt)
+                })
+                departmentSelect.disabled = false
+            }, function(xhr, status, error) {
+                departmentSelect.innerHTML = '<option selected disabled>Error loading departments</option>'
             });
-            departmentSelect.disabled = false;
-        } catch (error) {
-            departmentSelect.innerHTML = '<option selected disabled>Error loading departments</option>';
-        }
+
+       
     });
 
     // departmentSelect.addEventListener('change', async function () {
@@ -193,22 +190,22 @@ function renderCompany(cityList) {
         const departmentId = this.value;
         projectSelect.innerHTML = '<option selected disabled>Loading...</option>';
         projectSelect.disabled = true;
-
-        try {
-            const response = await fetch(`/admin/get_records/project_by_department/${departmentId}`);
-            const projects = await response.json();
-
-            projectSelect.innerHTML = '<option selected disabled>Select a project</option>';
-            projects.forEach(project => {
-                const opt = document.createElement('option');
-                opt.value = project.project_id;
-                opt.textContent = project.project_name;
-                projectSelect.appendChild(opt);
+        CallAPI("/admin/get_records/project_by_department/" + departmentId, 'GET', {
+            }, function(response) {
+                response = response.data
+                projectSelect.innerHTML = '<option selected disabled>Select a project</option>'
+                response.forEach(project => {
+                    const opt = document.createElement('option')
+                    opt.value = project.project_id
+                    opt.textContent = project.project_name
+                    projectSelect.appendChild(opt)
+                })
+                projectSelect.disabled = false
+            }, function(xhr, status, error) {
+                projectSelect.innerHTML = '<option selected disabled>Error loading projects</option>'
             });
-            projectSelect.disabled = false;
-        } catch (error) {
-            projectSelect.innerHTML = '<option selected disabled>Error loading projects</option>';
-        }
+
+        
     });
 
 
@@ -273,9 +270,13 @@ function renderCompany(cityList) {
 `;
 
 ; // clear previous content
-try {
-    const response = await fetch(`/admin/get_records/manager_project_job_map/${projectId}`);
-    const jobDescriptions = await response.json();
+
+CallAPI("/admin/get_records/manager_project_job_map/" + projectId, 'GET', {
+    }, function(response) {
+        response = response.data
+      
+
+    const jobDescriptions = response;
 
     if (jobDescriptions.length === 0) {
         accordionContainer.innerHTML = `<p class="text-muted">No job descriptions available for this project.</p>`;
@@ -362,10 +363,10 @@ try {
             order: [],
         });
     });
-} catch (error) {
-    console.error('Error loading job descriptions:', error);
-    accordionContainer.innerHTML = `<div class="alert alert-danger">Failed to load job descriptions.</div>`;
-}
+
+        
+    }, function(xhr, status, error) {
+    });
 
 });
 
@@ -383,7 +384,11 @@ try {
         }).catch(err => console.error('Error copying link:', err));
     }
 
-    fetchData();
+    $(document).ready(function () {
+        fetchData();
+
+    });
+
 
 
 
@@ -419,32 +424,9 @@ async function createJobDescription(project_id, manager_id) {
         job_description: description,
         remarks: remarks
     };
-
-       
-        try {
-            const response = await fetch('/admin/add/job-description', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jobData)
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log('Job description created:', result);
-                Swal.fire({
-                        title: result.job_code,
-                        text: result.message,
-                        icon: "success"
-                        });
-            } else {
-                console.error('Error creating job description:', result.error);
-            }
-        } catch (error) {
-            console.error('Request failed:', error);
-        }
+    
+    CallAPI("/admin/add/job-description", 'POST', jobData)
+        
 }
 </script>
 

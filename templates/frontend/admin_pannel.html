@@ -121,18 +121,16 @@
                 "info": true,         // Enable info display
                 }
             );
+        });
 
            
 
             $(document).ready(function() {
-            // Assuming the data is coming from an AJAX call
-            $.ajax({
-                url: '/admin/get_all_records', // Replace with your actual API endpoint
-                method: 'GET', // Or 'POST' if needed
-                success: function(response) {
-                    // Log the response to check data structure
-                    console.log(response);
-
+                CallAPI("/admin/get_all_records", 'GET', {
+                }, function(response) {
+                    console.log("Success:", response);
+                    response = response.data[0]
+                
                     // Check if the response contains valid data
                     if (response && response.companies) {
                         var tableBody = $('#companyTable tbody');
@@ -250,120 +248,164 @@
                         console.error('Invalid data structure:', response);
                     }
                 },
-                error: function(err) {
-                    console.error('Error fetching data:', err);
-                }
+                function(xhr, status, error) {
+                    console.error("Error:", error);
+                });
             });
-        });
+     
             
 
         
-            // Assuming the data is coming from an AJAX call
-          
 
-
-        });
+      
 
 
         
         function ChangeRole(user_id){
             var user_role = document.getElementById("user_id_"+user_id).value;
-            $.ajax({
-                url: '/admin/change_role',
-                type: 'POST',
-                contentType: 'application/json',  // Ensure JSON format
-                dataType: 'json',  // Expect JSON response
-                data: JSON.stringify({ user_id: user_id,user_role:user_role }),  // Convert data to JSON
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        title: "Changes done successfully",
-                        text: response.message,
-                        icon: "success"
-                        });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error);
-                    Swal.fire({
-                        title: "Error",
-                        text: xhr.responseText,
-                        icon: "danger"
-                        });
-                }
+            data = CallAPI('/admin/change_role', 'POST', {
+                user_id: user_id,
+                user_role: user_role
+            }, function(response) {
+            }, function(xhr, status, error) {
             });
         }
+
         function MakeAdmin(user_id) {
-            $.ajax({
-                url: '/admin/make_admin',
-                type: 'POST',
-                contentType: 'application/json',  // Ensure JSON format
-                dataType: 'json',  // Expect JSON response
-                data: JSON.stringify({ user_id: user_id }),  // Convert data to JSON
-                success: function(response) {
-                    console.log(response);
-                    alert(response.message);  // Show success message
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error);
-                    alert("Error making admin: " + xhr.responseText);  // Show error message
-                }
+
+            CallAPI('/admin/make_admin', 'POST', {
+                user_id: user_id,
+            }, function(response) {
+            }, function(xhr, status, error) {
             });
+
         }
         function MakeActive(user_id) {
-            $.ajax({
-                url: '/admin/make_activate',
-                type: 'POST',
-                contentType: 'application/json',  // Ensure JSON format
-                dataType: 'json',  // Expect JSON response
-                data: JSON.stringify({ user_id: user_id }),  // Convert data to JSON
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        title: "Changes done successfully",
-                        text: response.message,
-                        icon: "success"
-                        });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error);
-                    Swal.fire({
-                        title: "Error",
-                        text: xhr.responseText,
-                        icon: "danger"
-                        });
-                }
-
+            CallAPI('/admin/make_activate', 'POST', {
+                user_id: user_id,
+            }, function(response) {
+            }, function(xhr, status, error) {
             });
         }
 
         function Makeverified(user_id) {
-            $.ajax({
-                url: '/admin/make_verified',
-                type: 'POST',
-                contentType: 'application/json',  // Ensure JSON format
-                dataType: 'json',  // Expect JSON response
-                data: JSON.stringify({ user_id: user_id }),  // Convert data to JSON
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        title: "Changes done successfully",
-                        text: response.message,
-                        icon: "success"
-                        });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error);
-                    Swal.fire({
-                        title: "Error",
-                        text: xhr.responseText,
-                        icon: "danger"
-                        });
-                }
+            CallAPI('/admin/make_verified', 'POST', {
+                user_id: user_id,
+            }, function(response) {
+            }, function(xhr, status, error) {
             });
+
         }
 
+        $(document).ready(function() {
+            // company call
+                CallAPI("/admin/get_records/company", 'GET', {
+                }, function(response) {
+                    console.log("Success:", response);
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+                        $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+                        $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
+                        $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+                    });
+                }, function(xhr, status, error) {
+                });
 
-        
+            // city
+                CallAPI("/admin/get_records/city", 'GET', {
+                        }, function(response) {
+                            response = response.data
+                            $.each(response, function(index, value) {
+                                $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
+                                $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+                            });
+                        }, function(xhr, status, error) {
+                        });
+               
+
+                //country
+              
+                CallAPI("/admin/get_records/country", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
+                        $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td> <td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+                    });
+                }, function(xhr, status, error) {
+                });
+          
+
+                //branch
+           
+                CallAPI("/admin/get_records/branch", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+                        $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+                    });
+                }, function(xhr, status, error) {
+                });
+
+                //department
+                CallAPI("/admin/get_records/department", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+                        $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+                    });
+                }, function(xhr, status, error) {
+                });
+
+                //project
+                CallAPI("/admin/get_records/project", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+                        $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+
+                    });
+                }, function(xhr, status, error) {
+                });
+
+                //manager
+                CallAPI("/admin/get_records/manager", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
+                        $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+                    });
+                }, function(xhr, status, error) {
+                });
+            
+                //customers
+                CallAPI("/auth/customers", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#managerProjectMapUserManager").append("<option value='" + value.id + "'>" + value.username + "</option>");
+
+                    });
+                }, function(xhr, status, error) {
+                });
+
+                //ManagerProjectMap
+                CallAPI("/admin/get_records/ManagerProjectMap", 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $.each(response, function(index, value) {
+                        $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+
+                    });
+                }, function(xhr, status, error) {
+                });
+            });
+
     </script>
 
 {% endblock body %}

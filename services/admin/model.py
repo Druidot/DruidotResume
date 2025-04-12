@@ -28,8 +28,9 @@ class Country(db.Model):
     country_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     country_name = db.Column(db.String(255), nullable=False)
     country_code = db.Column(db.String(10), unique=True)
-
     cities = db.relationship('City', backref='country', lazy=True)
+
+
 
 # City Table
 class City(db.Model):
@@ -37,7 +38,6 @@ class City(db.Model):
     city_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     city_name = db.Column(db.String(255), nullable=False)
     country_id = db.Column(db.Integer, db.ForeignKey('country_mst.country_id'))
-
     branches = db.relationship('Branch', backref='city', lazy=True)
 
 # Branch Table
@@ -47,7 +47,6 @@ class Branch(db.Model):
     branch_name = db.Column(db.String(255), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company_mst.company_id'), nullable=False)
     city_id = db.Column(db.Integer, db.ForeignKey('city_mst.city_id'), nullable=False)
-
     departments = db.relationship('Department', backref='branch', lazy=True)
 
 # Department Table
@@ -65,7 +64,6 @@ class Project(db.Model):
     project_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     project_name = db.Column(db.String(255), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('department_mst.department_id'), nullable=False)
-
     managers = db.relationship('Manager', secondary='manager_project_map', back_populates='projects')
     job_descriptions = db.relationship('ManagerJobdescriptionModel', backref='projects', lazy=True)
 
@@ -95,10 +93,6 @@ class ManagerProjectMapModel(db.Model):
     branch = db.relationship('Branch', backref='project_manager_maps')
     department = db.relationship('Department', backref='project_manager_maps')
     company = db.relationship('Company', backref='project_manager_maps')
-
-
-
-
 
 
 class ManagerJobdescriptionModel(db.Model):
@@ -139,6 +133,22 @@ class ManagerJobdescriptionModel(db.Model):
     # Relationship with ManagerProjectMapModel
     manager_project_map = db.relationship('ManagerProjectMapModel', backref='job_descriptions')
     project = db.relationship('Project', backref='manager_project_job_maps')
+
+
+class LogoAndTitile(db.Model):
+    __tablename__ = 'logo_and_title'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)
+    logo_path = db.Column(db.Text, nullable=False)
+    created_dt = db.Column(db.DateTime, default=db.func.now(), nullable=False)  # Creation timestamp
+    updated_dt = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now(), nullable=False)  # Last update timestamp
+    created_by = db.Column(db.String(50), nullable=True)  # Creator's identifier (e.g., username)
+    updated_by = db.Column(db.String(50), nullable=True)  # Last updater's identifier
+    user = db.relationship('User', backref=db.backref('LogoAndTitile', uselist=False))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
+
+
+
 
 
 

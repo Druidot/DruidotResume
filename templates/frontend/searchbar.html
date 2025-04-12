@@ -110,13 +110,13 @@
 
     let companies = [];
 
-    async function fetchCompanyData() {
-        try {
-            const response = await fetch('/admin/get_records/company');
-            companies = await response.json();
-        } catch (error) {
-            console.error('Error fetching company data:', error);
-        }
+    function fetchCompanyData() {
+            CallAPI("/admin/get_records/company", 'GET', {
+                    }, function(response) {
+                console.log("Success:", response);
+                companies = response.data
+            }, function(xhr, status, error) {
+            });
     }
 
     function showSuggestions(query) {
@@ -181,7 +181,9 @@
         }
     });
 
+$(document).ready(function(){
     fetchCompanyData();
+})
 </script>
 
 {% endblock body %}

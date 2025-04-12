@@ -98,6 +98,80 @@
               document.documentElement.classList.toggle('light-theme');
           }
 
+        
+
+          // function CallAPI(endpoint, method, data) {
+          //   let response = null;  // Initialize response variable
+          //   $.ajax({
+          //       url: endpoint,
+          //       type: method,
+          //       data: data,
+          //       contentType: 'application/json',  // Ensure JSON format
+          //       dataType: 'json',  // Expect JSON response
+          //       success: function(response) {
+          //           response = response;  // Store the response
+                   
+          //           // Handle success
+          //           console.log("Success:", response);
+          //           Swal.fire({
+          //               icon: response.icon,
+          //               title: response.title,
+          //               text: response.message,
+          //           });
+          //       },
+          //       error: function(xhr, status, error) {
+          //           // Handle error
+          //           console.error("Error:", error);
+          //           Swal.fire({
+          //               icon: xhr.responseJSON.icon,
+          //               title: 'Error',
+          //               text: xhr.responseJSON.message,
+          //           });
+          //       }
+          //   });
+          //   return response
+              
+          // }
+
+
+          function CallAPI(endpoint, method, data, onSuccess = null, onError = null) {
+              $.ajax({
+                  url: endpoint,
+                  type: method,
+                  data: JSON.stringify(data),
+                  contentType: 'application/json',
+                  dataType: 'json',
+                  success: function(response) {
+                      console.log("Success:", response);
+                      if (method == "POST"){
+                          Swal.fire({
+                              icon: response.icon || "success",
+                              title: response.title || "Success",
+                              text: response.message || "Operation completed successfully",
+                          });
+                      }
+
+                      if (onSuccess) onSuccess(response);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("Error:", error);
+                      if(method == "POST"){
+                            Swal.fire({
+                                icon: (xhr.responseJSON && xhr.responseJSON.icon) || "error",
+                                title: "Error",
+                                text: (xhr.responseJSON && xhr.responseJSON.message) || "Something went wrong",
+                            });
+                        }
+
+                      if (onError) onError(xhr, status, error);
+                  }
+              });
+          }
+
+
+          
+
+
          
       </script>
     </body>
