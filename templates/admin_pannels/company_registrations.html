@@ -1,0 +1,70 @@
+<div class="modal fade" id="companyregistration" tabindex="-1" aria-labelledby="companyregistrationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="companyregistrationLabel">Company Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form action="/admin/add_company" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Company Name<span class="required">*</span></label>
+                            <input type="text" class="form-control" required name="company_name" placeholder="Company Name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Company Address<span class="required">*</span></label>
+                            <input type="text" class="form-control" name="company_address" placeholder="Company Address">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email<span class="required">*</span></label>
+                            <input type="email" class="form-control" required name="company_email" placeholder="Company Email">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone<span class="required">*</span></label>
+                            <input type="text" class="form-control" name="company_phone" placeholder="Company Phone">
+                        </div>
+                    </div>
+
+            
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Save changes</button>
+                    </div>
+                </form>
+
+
+                <!-- <div class="container mt-4">
+                    <table id="companyTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                        <thead class="table-info">
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Company Address</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <td>Action</td>
+
+                            </tr>
+                        </thead>
+                        <tbody id="companyTablesbody">
+
+
+                        </tbody>
+                    </table>
+                </div> -->
+
+
+
+            </div>
+
+            
+        </div>
+    </div>
+</div>

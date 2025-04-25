@@ -1,0 +1,67 @@
+<div class="modal fade" id="commapedregistration" tabindex="-1" aria-labelledby="commapedregistrationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commapedregistrationLabel">Assign Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form action="/admin/add_manager_project_map" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Company <span class="text-danger">*</span></label>
+                            <select class="form-control" id="mpCompany" name="company_id" onchange="getcity(this.value)" required>
+                                <option value="" disabled selected>Select Company</option>
+                            </select>
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">City <span class="text-danger">*</span></label>
+                            <select class="form-control" id="mpCity" name="city_id" onchange="getbranch(this.value, $('#mpCompany').val())" required>
+                                <option value="" disabled selected>Select City</option>
+                            </select>
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Branch <span class="text-danger">*</span></label>
+                            <select class="form-control" id="mpBranch" name="branch_id" onchange="getdepartment(this.value)" required>
+                                <option value="" disabled selected>Select Branch</option>
+                            </select>
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Department <span class="text-danger">*</span></label>
+                            <select class="form-control" id="mpDepartment" name="department_id" onchange="getproject(this.value)" required>
+                                <option value="" disabled selected>Select Department</option>
+                            </select>
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Project <span class="text-danger">*</span></label>
+                            <select class="form-control" id="managerProjectMapProject" name="project_id" required>
+                                <option value="" disabled selected>Select Project</option>
+                            </select>
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Manager <span class="text-danger">*</span></label>
+                            <select class="form-control" id="managerProjectMapManager" name="manager_id" required>
+                                <option value="" disabled selected>Select Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Save changes</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="modal fade" id="projectregistration" tabindex="-1" aria-labelledby="projectregistrationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="branchregistrationLabel">Project Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form action="/admin/add_project" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                Project Name <span class="required text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" name="project_name" required placeholder="Enter project name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                Department <span class="required text-danger">*</span>
+                            </label>
+                            <select class="form-control" id="projectDepartment" name="department_id" required>
+                                <option value="" disabled selected>Select Department</option>
+                                <!-- Department options go here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Save changes</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

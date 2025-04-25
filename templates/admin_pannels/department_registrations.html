@@ -1,0 +1,40 @@
+<div class="modal fade" id="departmentregistration" tabindex="-1" aria-labelledby="departmentregistrationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="departmentregistrationLabel">Department Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form action="/admin/add_department" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                Department Name <span class="required text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" name="department_name" required placeholder="Enter department name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                Branch <span class="required text-danger">*</span>
+                            </label>
+                            <select class="form-control" id="departmentBranch" name="branch_id" required>
+                                <option value="" disabled selected>Select Branch</option>
+                                <!-- Dynamically insert branch options here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Save changes</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

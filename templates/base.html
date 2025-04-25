@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analytics Dashboard - This is an example dashboard created using build-in elements and components.</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+    <style>
+        .required {
+            color: red;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+{% include 'admin_pannels/user_profile.html' %}
+    
+
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+
+
+        <div class="app-header header-shadow">
+            <div class="app-header__logo">
+                <div class="logo-src"></div>
+                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                            data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>
+            <div class="app-header__content">
+                <div class="app-header-left">
+                    <div class="search-wrapper">
+                        <div class="input-holder">
+                            <input type="text" class="search-input" placeholder="Type to search">
+                            <button class="search-icon"><span></span></button>
+                        </div>
+                        <button class="close"></button>
+                    </div>
+                    <!-- <ul class="header-menu nav">
+                        <li class="nav-item">
+                            <a href="javascript:void(0);" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Statistics
+                            </a>
+                        </li>
+                        <li class="btn-group nav-item">
+                            <a href="javascript:void(0);" class="nav-link">
+                                <i class="nav-link-icon fa fa-edit"></i>
+                                Projects
+                            </a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a href="javascript:void(0);" class="nav-link">
+                                <i class="nav-link-icon fa fa-cog"></i>
+                                Settings
+                            </a>
+                        </li>
+                    </ul> -->
+                </div>
+                <div class="app-header-right">
+                    <div class="header-btn-lg pr-0">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            class="p-0 btn">
+                                            
+                                            <img width="40" height="40" class="rounded-circle" alt=""
+                                                src="{{ url_for('auth.media', filename=current_user.profile.profile_picture) }}">
+                                            <!-- <i class="fa fa-angle-down ml-2 opacity-8"></i> -->
+                                        </a>
+                                        <div tabindex="-1" role="menu" aria-hidden="true"
+                                            class="dropdown-menu dropdown-menu-right">
+                                            <a data-toggle="modal" data-target="#userprofile" class="dropdown-item" type="button"
+                                                tabindex="0">
+                                                 User Profile
+                                            </a>
+                                            <button type="button" tabindex="0" class="dropdown-item">Settings</button>
+                                            <!-- <h6 tabindex="-1" class="dropdown-header">Header</h6> -->
+                                            <button type="button" tabindex="0" class="dropdown-item">Help</button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <a type="button" tabindex="0" class="dropdown-item"
+                                                href="/auth/logout">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-content-left  ml-3 header-user-info">
+                                    <div class="widget-heading">
+                                        {{current_user.username}}
+                                    </div>
+                                    <div class="widget-subheading">
+                                        {{current_user.roles}}
+                                    </div>
+                                </div>
+                                <!-- <div class="widget-content-right header-user-info ml-3">
+                                    <button type="button"
+                                        class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
+                                        <i class="fa text-white fa-calendar pr-1 pl-1"></i>
+                                    </button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include 'common_components/ui_settings.html' %}
+        <div class="app-main">
+            {% if current_user.is_admin %}
+            {% include 'common_components/sidebar.html' %}
+            {% endif %}
+
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <!-- {% include 'common_components/footer.html' %} -->
+
+
+                <!-- Modal -->
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+        function applyDataTables() {
+            $('table').each(function () {
+                // Check if the table is already initialized
+                if (!$.fn.DataTable.isDataTable(this)) {
+                    $(this).DataTable({
+                        paging: true,
+                        searching: true,
+                        ordering: true,
+                        info: true
+                    });
+                }
+            });
+        }
+        //    $(document).ready(function () {
+        //         applyDataTables(); // Call the function to apply DataTables to all tables
+        //     });
+        function CallAPI(endpoint, method, data, onSuccess = null, onError = null) {
+            $.ajax({
+                url: endpoint,
+                type: method,
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (response) {
+                    console.log("Success:", response);
+                    if (method == "POST") {
+
+                        Swal.fire({
+                            icon: response.icon || "success",
+                            title: response.title || "Success",
+                            text: response.message || "Operation completed successfully",
+                        });
+                    }
+
+                    if (onSuccess) onSuccess(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    if (method == "POST") {
+                        Swal.fire({
+                            icon: (xhr.responseJSON && xhr.responseJSON.icon) || "error",
+                            title: "Error",
+                            text: (xhr.responseJSON && xhr.responseJSON.message) || "Something went wrong",
+                        });
+                    }
+
+                    if (onError) onError(xhr, status, error);
+                }
+            });
+            applyDataTables();
+
+        }
+
+
+    </script>
+
+
+
+<script>
+    <!----------------------------------------------------------->
+    // Function to get cities based on selected company and managers based company
+    function getcity(companyId) {
+        CallAPI("/admin/get_records/city_by_company/" + companyId, 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $("#mpCity").empty().append("<option>Select City</option>");
+                    $.each(response.city_list, function(index, value) {
+                        $("#mpCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
+                    });
+                    $("#managerProjectMapManager").empty().append("<option>Select Manager</option>");
+                    $.each(response.manager_list, function(index, value) {
+                        $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
+                    });
+                }, function(xhr, status, error) {
+                });
+    
+    }
+    
+    // Function to get branches based on selected city
+    function getbranch(cityId,companyId) {
+        CallAPI("/admin/get_records/branch_by_city/" + cityId + "/" + companyId, 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $("#mpBranch").empty().append("<option>Select Branch</option>");
+                    $.each(response, function(index, value) {
+                        console.log(value);
+                        $("#mpBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
+                    });
+                }, function(xhr, status, error) {
+                });
+    }
+       
+     
+    
+    // Function to get departments based on selected branch
+    function getdepartment(branchId) {
+        CallAPI("/admin/get_records/department_by_branch/" + branchId, 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $("#mpDepartment").empty().append("<option>Select Department</option>");
+                    $.each(response, function(index, value) {
+                        console.log(value);
+                        $("#mpDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
+                    });
+                }, function(xhr, status, error) {
+                });
+       
+    }
+    
+    // Function to get projects based on selected department
+    function getproject(departmentId) {
+        CallAPI("/admin/get_records/project_by_department/" + departmentId, 'GET', {
+                }, function(response) {
+                    response = response.data
+                    $("#managerProjectMapProject").empty().append("<option>Select Project</option>");
+                    $.each(response, function(index, value) {
+                        console.log(value);
+                        $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
+                    });
+                }, function(xhr, status, error) {
+                });
+       
+    }
+    </script>
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<div class="modal fade" id="userprofile" tabindex="-1" aria-labelledby="userprofileLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userprofileLabel">User Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form action="/auth/profile/save" method="POST" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-center">
+                        <label class="form-label">Profile Picture</label>
+                        <div class="mb-2">
+                          <img src="{{ url_for('auth.media', filename=current_user.profile.profile_picture) }}" alt="Profile" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        <input type="file" class="form-control" name="profile_picture" accept="image/*">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="full_name" required placeholder="Enter full name" value="{{current_user.profile.full_name}}">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required placeholder="Enter email address" value="{{current_user.email}}" readonly>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control" name="mobile" required placeholder="Enter mobile number" value="{{current_user.profile.mobile}}">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" name="dob" required placeholder="Select date of birth" value="{{current_user.profile.dob}}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <div class="col-md-4">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city" required placeholder="Enter city name" value="{{current_user.profile.city}}">
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">State</label>
+                        <input type="text" class="form-control" name="state" required placeholder="Enter state name" value="{{current_user.profile.state}}">
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" name="country" required placeholder="Enter country name" value="{{current_user.profile.country}}">
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <div class="col-md-12">
+                        <label class="form-label">Full Address</label>
+                        <textarea class="form-control" name="address" rows="2" placeholder="Street, Apartment, Zipcode etc." >{{current_user.profile.address}}</textarea>
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label">Role</label>
+                        <select class="form-control" name="role" required>
+                          <option disabled selected>Select Role</option>
+                          <option disabled selected>{{current_user.profile.role}}</option>
+                          <option value="admin">Admin</option>
+                          <option value="manager">Manager</option>
+                          <option value="employee">Employee</option>
+                          <option value="user">User</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">Gender</label>
+                        <select class="form-control" name="gender">
+                          <option disabled selected>Select Gender</option>
+                          <option disabled selected>{{current_user.profile.gender}}</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <div class="col-md-12">
+                        <label class="form-label">About / Bio</label>
+                        <textarea class="form-control" name="about" rows="3" placeholder="Tell something about yourself...">{{current_user.profile.about}}</textarea>
+                      </div>
+                    </div>
+                  
+                    <!-- <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm password">
+                      </div>
+                    </div> -->
+                  
+                    <div class="row">
+                      <div class="col-12 text-end">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-info">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  
+                  
+                
+            </div>
+        </div>
+    </div>
+</div>

@@ -135,8 +135,8 @@ class ManagerJobdescriptionModel(db.Model):
     project = db.relationship('Project', backref='manager_project_job_maps')
 
 
-class LogoAndTitile(db.Model):
-    __tablename__ = 'logo_and_title'
+class Organization(db.Model):
+    __tablename__ = 'organization'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
     logo_path = db.Column(db.Text, nullable=False)
@@ -144,7 +144,7 @@ class LogoAndTitile(db.Model):
     updated_dt = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now(), nullable=False)  # Last update timestamp
     created_by = db.Column(db.String(50), nullable=True)  # Creator's identifier (e.g., username)
     updated_by = db.Column(db.String(50), nullable=True)  # Last updater's identifier
-    user = db.relationship('User', backref=db.backref('LogoAndTitile', uselist=False))
+    user = db.relationship('User', backref=db.backref('Organization', uselist=False))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
 
 

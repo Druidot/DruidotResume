@@ -229,7 +229,9 @@ def get_companie_info(company_id):
 @login_required
 def get_company_details(company_id):
     company_detail= Company.query.filter_by(company_id=company_id).first()
-    return render_template('./frontend/company_details.html',company_id=company_id,company_detail=company_detail)
+    # return render_template('./frontend/company_details.html',company_id=company_id,company_detail=company_detail)
+    return render_template('./screens/company_page.html',company_id=company_id,company_detail=company_detail)
+
 
 
 

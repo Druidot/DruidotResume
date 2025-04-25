@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_login import UserMixin
 from extensions import db
 
@@ -14,3 +15,23 @@ class User(db.Model,UserMixin):
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
     deleted_at = db.Column(db.DateTime, nullable=True)
     roles = db.Column(db.String(100), nullable=True, default='user')
+
+
+class Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    full_name = db.Column(db.String(100))
+    mobile = db.Column(db.String(20))
+    dob = db.Column(db.Date)
+    city = db.Column(db.String(50))
+    state = db.Column(db.String(50))
+    country = db.Column(db.String(50))
+    address = db.Column(db.Text)
+    role = db.Column(db.String(50))
+    gender = db.Column(db.String(10))
+    about = db.Column(db.Text)
+    profile_picture = db.Column(db.String(200))  # filename or URL
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('profile', uselist=False))

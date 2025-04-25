@@ -1,12 +1,17 @@
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from datetime import datetime
+import os
+from typing import Counter
+from flask import Blueprint, app, flash, jsonify, redirect, render_template, request, send_from_directory, url_for
 from flask_pydantic import validate
 from flask_jwt_extended import create_access_token
 from pydantic import ValidationError
-from services.login_and_registration.model import User
+from services.admin.model import Organization
+from services.login_and_registration.model import Profile, User
 from services.login_and_registration.schema import UserRegisterSchema, UserLoginSchema
 from services.login_and_registration.service import get_user_by_email, register_user, authenticate_user
 from flask_login import login_user, logout_user, login_required, current_user
-
+from werkzeug.utils import secure_filename
+from extensions import db
 from utility.error_messages import error_messages
 
 
@@ -36,6 +41,10 @@ def api_login(body: UserLoginSchema):
 
 
 #-----------------------------------------------Template Rendering-----------------------------------------------#
+
+@auth_bp.route('/media/<path:filename>')
+def media(filename):
+    return send_from_directory('.\media\profile_pic', filename)
 
 @auth_bp.route("/login_page", methods=["GET"])
 def login_page():
@@ -100,10 +109,49 @@ def logout():
 @validate()
 @login_required
 def dashboard():
+
+    organization = Organization.query.first()
+    if not organization:
+        return redirect(url_for("auth.register_organization"))
+
     if current_user.is_admin:
         users = User.query.all()
-        return render_template('./frontend/admin_pannel.html', users=users)
-    return render_template('./frontend/searchbar.html')
+
+        total_users = len(users)
+
+        if total_users == 0:
+            return jsonify({
+                "total_users": 0,
+                "admin_percentage": 0.0,
+                "user_percentage": 0.0,
+                "customer_percentage": 0.0
+            })
+
+        # Count roles
+        role_counts = Counter(user.roles for user in users)
+
+        # Get counts (default to 0 if role not found)
+        admin_count = role_counts.get("admin", 0)
+        user_count = role_counts.get("user", 0)
+        customer_count = role_counts.get("customer", 0)
+
+        active_users = sum(user.is_active for user in users)
+        verified_users = sum(user.is_verified for user in users)
+
+        # Calculate percentages
+        admin_percentage = round((admin_count / total_users) * 100, 2)
+        user_percentage = round((user_count / total_users) * 100, 2)
+        customer_percentage = round((customer_count / total_users) * 100, 2)
+        # return render_template('./frontend/admin_pannel.html', users=users)
+        return render_template('./admin_pannels/dashboard.html', users=users,
+                               admin_percentage=admin_percentage, 
+                               user_percentage=user_percentage, 
+                               customer_percentage=customer_percentage,
+                               active_users=active_users,
+                               verified_users=verified_users,
+                               total_users=total_users)
+
+    return render_template('./screens/homepage.html')
 
 
 
@@ -124,6 +172,83 @@ def get_active_verified_customers():
     ]
 
     return jsonify(customer_data), 200
+
+
+@auth_bp.route("/profile/save", methods=["POST"])
+@login_required
+def save_profile():
+    user_id = current_user.id  # Get from session or form
+
+    user = User.query.get(user_id)
+    if not user:
+        flash("User not found.")
+        return redirect(url_for("auth.dashboard"))
+
+
+    # Get or create profile
+    profile = Profile.query.filter_by(user_id=user_id).first()
+    if not profile:
+        profile = Profile(user_id=user_id)
+
+    profile.full_name = request.form.get("full_name")
+    profile.mobile = request.form.get("mobile")
+    dob_str = request.form.get("dob")
+    if dob_str:
+        profile.dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+    profile.city = request.form.get("city")
+    profile.state = request.form.get("state")
+    profile.country = request.form.get("country")
+    profile.address = request.form.get("address")
+    profile.role = request.form.get("role")
+    profile.gender = request.form.get("gender")
+    profile.about = request.form.get("about")
+
+    # Profile picture upload
+    pic = request.files.get("profile_picture")
+    if pic and pic.filename:
+        filename = secure_filename(pic.filename)
+        filepath = os.path.join('.\media\profile_pic', filename)
+        pic.save(filepath)
+        profile.profile_picture = filename
+
+    db.session.add(profile)
+    db.session.commit()
+    flash("Profile updated successfully!")
+    return redirect(url_for("auth.dashboard"))
+
+
+
+
+@auth_bp.route('/organization/register', methods=['GET','POST'])
+@login_required
+def register_organization():
+    user_id = current_user.id
+    if request.method == 'POST':
+        title = request.form['title']
+        logo_file = request.files['logo']
+
+        if logo_file:
+            filename = secure_filename(logo_file.filename)
+            filepath = os.path.join('.\media\logo', filename)
+            logo_file.save(filepath)
+            organization = Organization.query.filter_by(user_id=user_id).first()
+            if not organization:
+                organization = Organization(user_id=user_id)
+
+            
+            organization.title=title
+            organization.logo_path=filepath
+            organization.created_by="owner"  # auto manage this or take from session
+            organization.updated_by="owner"
+            organization.created_dt=datetime.now()
+            organization.updated_dt=datetime.now()
+
+            db.session.add(organization)
+            db.session.commit()
+            return redirect(url_for("auth.dashboard"))
+    else:
+        return render_template('./admin_pannels/organization_register.html')
+
 
 
 

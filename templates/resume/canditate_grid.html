@@ -1,5 +1,5 @@
-{% extends './frontend/base.html' %}
-{% block body %}
+{% extends 'base.html' %}
+{% block content %}
   <style>
     body {
       background-color: #f8f9fa;
@@ -10,7 +10,7 @@
   </style>
 </head>
 <body>
-  <div class="container py-5">
+  <div class="py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="mb-0">Candidate List</h2>
       <!-- <a href="#" class="btn btn-success">+ Add New Candidate</a> -->
@@ -94,6 +94,6 @@
 
     }
 </script>
-{%endblock%}
+{%endblock content%}
 
 

@@ -1,0 +1,50 @@
+<div class="modal fade" id="branchregistration" tabindex="-1" aria-labelledby="branchregistrationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="branchregistrationLabel">Branch Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form action="/admin/add_branch" method="POST">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Branch Name <span class="required text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" name="branch_name" required placeholder="Enter branch name">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Company <span class="required text-danger">*</span>
+                            </label>
+                            <select class="form-control" id="branchCompany" name="company_id" required>
+                                <option value="" disabled selected>Select Company</option>
+                                <!-- Add company options dynamically -->
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                City <span class="required text-danger">*</span>
+                            </label>
+                            <select class="form-control" id="branchCity" name="city_id" required>
+                                <option value="" disabled selected>Select City</option>
+                                <!-- Add city options dynamically -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Save changes</button>
+                    </div>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
