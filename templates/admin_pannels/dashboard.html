@@ -31,19 +31,19 @@
 
 
 {% block content %}
-        <div class="app-page-title">
-            <div class="page-title-wrapper">
-                <div class="page-title-heading">
-                    <div class="page-title-icon">
-                        <i class="pe-7s-car icon-gradient bg-mean-fruit">
-                        </i>
-                    </div>
-                    <div>Dashboard
-                        <div class="page-title-subheading">This is an dashboard HR agent.
-                        </div>
-                    </div>
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="pe-7s-car icon-gradient bg-mean-fruit">
+                </i>
+            </div>
+            <div>Dashboard
+                <div class="page-title-subheading">This is an dashboard HR agent.
                 </div>
-                <!-- <div class="page-title-actions">
+            </div>
+        </div>
+        <!-- <div class="page-title-actions">
                     <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
                         class="btn-shadow mr-3 btn btn-dark">
                         <i class="fa fa-star"></i>
@@ -96,49 +96,49 @@
                         </div>
                     </div>
                 </div> -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-midnight-bloom">
+            <div class="widget-content-wrapper text-white">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Total Users</div>
+                    <div class="widget-subheading">Total Users</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-white"><span>{{total_users}}</span></div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-midnight-bloom">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Total Users</div>
-                            <div class="widget-subheading">Total Users</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-white"><span>{{total_users}}</span></div>
-                        </div>
-                    </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-arielle-smile">
+            <div class="widget-content-wrapper text-white">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Verified Users</div>
+                    <div class="widget-subheading">Total Verified Users</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-white"><span>{{verified_users}}</span></div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-arielle-smile">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Verified Users</div>
-                            <div class="widget-subheading">Total Verified Users</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-white"><span>{{verified_users}}</span></div>
-                        </div>
-                    </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-grow-early">
+            <div class="widget-content-wrapper text-white">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Active Users</div>
+                    <div class="widget-subheading">Total Active Users</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-white"><span>{{active_users}}</span></div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-grow-early">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Active Users</div>
-                            <div class="widget-subheading">Total Active Users</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-white"><span>{{active_users}}</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
+        </div>
+    </div>
+    <!-- <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
                 <div class="card mb-3 widget-content bg-premium-dark">
                     <div class="widget-content-wrapper text-white">
                         <div class="widget-content-left">
@@ -150,9 +150,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- <div class="row">
+            </div> -->
+</div>
+<!-- <div class="row">
             <div class="col-md-12 col-lg-6">
                 <div class="mb-3 card">
                     <div class="card-header-tab card-header-tab-animation card-header">
@@ -429,7 +429,7 @@
                 </div>
             </div>
         </div> -->
-        <!-- <div class="row">
+<!-- <div class="row">
             <div class="col-md-6 col-xl-4">
                 <div class="card mb-3 widget-content">
                     <div class="widget-content-outer">
@@ -501,154 +501,158 @@
                 </div>
             </div>
         </div> -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="main-card mb-3 card">
-                    <div class="card-header">Active Users
-                        <div class="btn-actions-pane-right">
-                            <div role="group" class="btn-group-sm btn-group">
-                                <button class="active btn btn-focus">Last Week</button>
-                                <button class="btn btn-focus">All Month</button>
-                            </div>
-                        </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">Active Users
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="active btn btn-focus">Last Week</button>
+                        <button class="btn btn-focus">All Month</button>
                     </div>
-                    <div class="table-responsive">
-                        <div>
-                        <table class="align-middle mb-0 table table-borderless table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>Name</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Phone</th>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div>
+                    <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Phone</th>
 
-                                    <th class="text-center" colspan="2">Status</th>
-                                    <!-- <th class="text-center">Actions</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for user in users %}
-                                <tr>
-                                    <td class="text-center text-muted">{{user.id}}</td>
-                                    <td>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper">
-                                                <div class="widget-content-left mr-3">
-                                                    <div class="widget-content-left">
-                                                        <img width="30" height="30" class="rounded-circle"
-                                                            src="{{ url_for('auth.media', filename=user.profile.profile_picture) }}" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">{{user.username}}</div>
-                                                    <div class="widget-subheading opacity-7">{{user.profile.role}}</div>
+                                <th class="text-center" colspan="2">Status</th>
+                                <!-- <th class="text-center">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td class="text-center text-muted">{{user.id}}</td>
+                                <td>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-3">
+                                                <div class="widget-content-left">
+                                                    <img width="30" height="30" class="rounded-circle"
+                                                        src="{{ url_for('auth.media', filename=user.profile.profile_picture) }}"
+                                                        alt="">
                                                 </div>
                                             </div>
+                                            <div class="widget-content-left flex2">
+                                                <div class="widget-heading">{{user.username}}</div>
+                                                <div class="widget-subheading opacity-7">{{user.profile.role}}</div>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td class="text-center">{{user.email}}</td>
-                                    <td class="text-center">{{user.profile.mobile}}</td>
-                                    {%if user.is_verified %}
-                                    <td class="text-center">
-                                        <div class="badge badge-primary">Verified</div>
-                                    </td>
-                                    {%else%}
-                                    <td class="text-center">
-                                        <div class="badge badge-danger">Not Verified</div>
-                                    </td>
-                                    {%endif%}
-                                    {% if user.is_active %}
-                                    <td class="text-center">
-                                        <div class="badge badge-success">Active</div>
-                                    </td>
-                                   {%else%}
-                                    <td class="text-center">
-                                        <div class="badge badge-danger">Inactive</div>
-                                    </td>
-                                    {%endif%}
-                                    <!-- <td class="text-center">
+                                    </div>
+                                </td>
+                                <td class="text-center">{{user.email}}</td>
+                                <td class="text-center">{{user.profile.mobile}}</td>
+                                {%if user.is_verified %}
+                                <td class="text-center">
+                                    <div class="badge badge-primary">Verified</div>
+                                </td>
+                                {%else%}
+                                <td class="text-center">
+                                    <div class="badge badge-danger">Not Verified</div>
+                                </td>
+                                {%endif%}
+                                {% if user.is_active %}
+                                <td class="text-center">
+                                    <div class="badge badge-success">Active</div>
+                                </td>
+                                {%else%}
+                                <td class="text-center">
+                                    <div class="badge badge-danger">Inactive</div>
+                                </td>
+                                {%endif%}
+                                <!-- <td class="text-center">
                                         <button type="button" id="PopoverCustomT-1"
                                             class="btn btn-primary btn-sm">Details</button>
                                     </td> -->
-                                </tr>
-                                {%endfor%}
-                               
-                            </tbody>
-                        </table>
+                            </tr>
+                            {%endfor%}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-danger mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left pr-2 fsize-1">
+                            <div class="widget-numbers mt-0 fsize-3 text-danger">{{admin_percentage}}%</div>
+                        </div>
+                        <div class="widget-content-right w-100">
+                            <div class="progress-bar-xs progress">
+                                <div class="progress-bar bg-danger" role="progressbar"
+                                    aria-valuenow="{{admin_percentage}}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{admin_percentage}}%;"></div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="widget-content-left fsize-1">
+                        <div class="text-muted opacity-6">Admin</div>
                     </div>
-                   
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 col-lg-3">
-                <div class="card-shadow-danger mb-3 widget-chart widget-chart2 text-left card">
-                    <div class="widget-content">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left pr-2 fsize-1">
-                                    <div class="widget-numbers mt-0 fsize-3 text-danger">{{admin_percentage}}%</div>
-                                </div>
-                                <div class="widget-content-right w-100">
-                                    <div class="progress-bar-xs progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{admin_percentage}}"
-                                            aria-valuemin="0" aria-valuemax="100" style="width: {{admin_percentage}}%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-content-left fsize-1">
-                                <div class="text-muted opacity-6">Admin</div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-success mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left pr-2 fsize-1">
+                            <div class="widget-numbers mt-0 fsize-3 text-success">{{user_percentage}}%</div>
+                        </div>
+                        <div class="widget-content-right w-100">
+                            <div class="progress-bar-xs progress">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    aria-valuenow="{{user_percentage}}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{user_percentage}}%;"></div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card-shadow-success mb-3 widget-chart widget-chart2 text-left card">
-                    <div class="widget-content">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left pr-2 fsize-1">
-                                    <div class="widget-numbers mt-0 fsize-3 text-success">{{user_percentage}}%</div>
-                                </div>
-                                <div class="widget-content-right w-100">
-                                    <div class="progress-bar-xs progress">
-                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{user_percentage}}"
-                                            aria-valuemin="0" aria-valuemax="100" style="width: {{user_percentage}}%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-content-left fsize-1">
-                                <div class="text-muted opacity-6">Users</div>
-                            </div>
-                        </div>
+                    <div class="widget-content-left fsize-1">
+                        <div class="text-muted opacity-6">Users</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card-shadow-warning mb-3 widget-chart widget-chart2 text-left card">
-                    <div class="widget-content">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left pr-2 fsize-1">
-                                    <div class="widget-numbers mt-0 fsize-3 text-warning">{{customer_percentage}}%</div>
-                                </div>
-                                <div class="widget-content-right w-100">
-                                    <div class="progress-bar-xs progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{customer_percentage}}"
-                                            aria-valuemin="0" aria-valuemax="100" style="width: {{customer_percentage}}%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-content-left fsize-1">
-                                <div class="text-muted opacity-6">Customers</div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-warning mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left pr-2 fsize-1">
+                            <div class="widget-numbers mt-0 fsize-3 text-warning">{{customer_percentage}}%</div>
+                        </div>
+                        <div class="widget-content-right w-100">
+                            <div class="progress-bar-xs progress">
+                                <div class="progress-bar bg-warning" role="progressbar"
+                                    aria-valuenow="{{customer_percentage}}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{customer_percentage}}%;"></div>
                             </div>
                         </div>
                     </div>
+                    <div class="widget-content-left fsize-1">
+                        <div class="text-muted opacity-6">Customers</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
+        </div>
+    </div>
+    <!-- <div class="col-md-6 col-lg-3">
                 <div class="card-shadow-info mb-3 widget-chart widget-chart2 text-left card">
                     <div class="widget-content">
                         <div class="widget-content-outer">
@@ -669,41 +673,41 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </div> -->
+</div>
+</div>
 
 <script>
 
 
 
-           
 
-            $(document).ready(function() {
-                CallAPI("/admin/get_all_records", 'GET', {
-                }, function(response) {
-                    console.log("Success:", response);
-                    response = response.data[0]
-                
-                    // Check if the response contains valid data
-                    if (response && response.companies) {
-                        var tableBody = $('#companyTable tbody');
 
-                        // Loop through the companies
-                        response.companies.forEach(function(company) {
-                            // If there are no branches, handle it
-                            if (company.branches && company.branches.length > 0) {
-                                company.branches.forEach(function(branch) {
-                                    // If there are no departments, handle it
-                                    if (branch.departments && branch.departments.length > 0) {
-                                        branch.departments.forEach(function(department) {
-                                            // If there are no projects, handle it
-                                            if (department.projects && department.projects.length > 0) {
-                                                department.projects.forEach(function(project) {
-                                                    // If there are no managers, handle it
-                                                    if (project.managers && project.managers.length > 0) {
-                                                        project.managers.forEach(function(manager) {
-                                                            tableBody.append(`
+    $(document).ready(function () {
+        CallAPI("/admin/get_all_records", 'GET', {
+        }, function (response) {
+            console.log("Success:", response);
+            response = response.data[0]
+
+            // Check if the response contains valid data
+            if (response && response.companies) {
+                var tableBody = $('#companyTable tbody');
+
+                // Loop through the companies
+                response.companies.forEach(function (company) {
+                    // If there are no branches, handle it
+                    if (company.branches && company.branches.length > 0) {
+                        company.branches.forEach(function (branch) {
+                            // If there are no departments, handle it
+                            if (branch.departments && branch.departments.length > 0) {
+                                branch.departments.forEach(function (department) {
+                                    // If there are no projects, handle it
+                                    if (department.projects && department.projects.length > 0) {
+                                        department.projects.forEach(function (project) {
+                                            // If there are no managers, handle it
+                                            if (project.managers && project.managers.length > 0) {
+                                                project.managers.forEach(function (manager) {
+                                                    tableBody.append(`
                                                                 <tr>
                                                                     <td>${company.company_name || 'N/A'}</td>
                                                                     <td>${company.company_address || 'N/A'}</td>
@@ -717,10 +721,10 @@
                                                                     <td>${manager.manager_name || 'N/A'}</td>
                                                                 </tr>
                                                             `);
-                                                        });
-                                                    } else {
-                                                        // If no managers, still add project details
-                                                        tableBody.append(`
+                                                });
+                                            } else {
+                                                // If no managers, still add project details
+                                                tableBody.append(`
                                                             <tr>
                                                                 <td>${company.company_name || 'N/A'}</td>
                                                                 <td>${company.company_address || 'N/A'}</td>
@@ -734,11 +738,11 @@
                                                                 <td>N/A</td>
                                                             </tr>
                                                         `);
-                                                    }
-                                                });
-                                            } else {
-                                                // If no projects, handle department data
-                                                tableBody.append(`
+                                            }
+                                        });
+                                    } else {
+                                        // If no projects, handle department data
+                                        tableBody.append(`
                                                     <tr>
                                                         <td>${company.company_name || 'N/A'}</td>
                                                         <td>${company.company_address || 'N/A'}</td>
@@ -752,11 +756,11 @@
                                                         <td>N/A</td>
                                                     </tr>
                                                 `);
-                                            }
-                                        });
-                                    } else {
-                                        // If no departments, handle branch data
-                                        tableBody.append(`
+                                    }
+                                });
+                            } else {
+                                // If no departments, handle branch data
+                                tableBody.append(`
                                             <tr>
                                                 <td>${company.company_name || 'N/A'}</td>
                                                 <td>${company.company_address || 'N/A'}</td>
@@ -769,11 +773,11 @@
                                                 <td>N/A</td>
                                             </tr>
                                         `);
-                                    }
-                                });
-                            } else {
-                                // If no branches, handle company data
-                                tableBody.append(`
+                            }
+                        });
+                    } else {
+                        // If no branches, handle company data
+                        tableBody.append(`
                                     <tr>
                                         <td>${company.company_name || 'N/A'}</td>
                                         <td>${company.company_address || 'N/A'}</td>
@@ -788,310 +792,367 @@
 
                                     </tr>
                                 `);
-                            }
-                        });
-
-                        // Initialize the DataTable after data is populated
-                        // $('#companyTable').DataTable( {
-                        //         "paging": true,       
-                        //         "searching": true,    
-                        //         "ordering": true,    
-                        //         "info": true,         
-                        //  });
-                    } else {
-                        console.error('Invalid data structure:', response);
                     }
-                },
-                function(xhr, status, error) {
-                    console.error("Error:", error);
                 });
+
+                // Initialize the DataTable after data is populated
+                // $('#companyTable').DataTable( {
+                //         "paging": true,       
+                //         "searching": true,    
+                //         "ordering": true,    
+                //         "info": true,         
+                //  });
+            } else {
+                console.error('Invalid data structure:', response);
+            }
+        },
+            function (xhr, status, error) {
+                console.error("Error:", error);
             });
+    });
 
 
-     function ChangeRole(user_id){
-            var user_role = document.getElementById("user_id_"+user_id).value;
-            data = CallAPI('/admin/change_role', 'POST', {
-                user_id: user_id,
-                user_role: user_role
-            }, function(response) {
-            }, function(xhr, status, error) {
-            });
+    function ChangeRole(user_id) {
+        var user_role = document.getElementById("user_id_" + user_id).value;
+        data = CallAPI('/admin/change_role', 'POST', {
+            user_id: user_id,
+            user_role: user_role
+        }, function (response) {
+        }, function (xhr, status, error) {
+        });
+    }
+
+    function MakeAdmin(user_id) {
+
+        CallAPI('/admin/make_admin', 'POST', {
+            user_id: user_id,
+        }, function (response) {
+        }, function (xhr, status, error) {
+        });
+
+    }
+    function MakeActive(user_id) {
+        CallAPI('/admin/make_activate', 'POST', {
+            user_id: user_id,
+        }, function (response) {
+        }, function (xhr, status, error) {
+        });
+    }
+
+    function Makeverified(user_id) {
+        CallAPI('/admin/make_verified', 'POST', {
+            user_id: user_id,
+        }, function (response) {
+        }, function (xhr, status, error) {
+        });
+
+    }
+
+
+
+
+
+    $(document).ready(function () {
+        loadCompanies();
+        loadCities();
+        loadCountries();
+        loadBranches();
+        loadDepartments();
+        loadProjects();
+        loadManagers();
+        loadCustomers();
+        loadManagerProjectMaps();
+    });
+
+
+        function editCompany(company,button) {
+            $("#companyTablesbody tr").removeClass("active");
+
+            // Add 'active' class to the row where Edit button was clicked
+            $(button).closest('tr').addClass('active');
+            $("#company_id").val(company.company_id);
+            $("#company_name").val(company.company_name);
+            $("#company_address").val(company.company_address);
+            $("#company_email").val(company.company_email);
+            $("#company_phone").val(company.company_phone);
+
+            $("#companyForm").attr("action", `/admin/update_company/${company.company_id}`); // your update URL
+            $("#submitBtn").text("Update Company");
         }
 
-        function MakeAdmin(user_id) {
-
-            CallAPI('/admin/make_admin', 'POST', {
-                user_id: user_id,
-            }, function(response) {
-            }, function(xhr, status, error) {
-            });
-
+        function resetForm() {
+            $("#companyTablesbody tr").removeClass("active");
+            $("#companyForm")[0].reset(); // Reset form
+            $("#companyForm").attr("action", "/admin/add_company"); // Reset to add mode
+            $("#submitBtn").text("Save changes"); // Reset button text
+            $("#company_id").val(""); // Clear hidden id
         }
-        function MakeActive(user_id) {
-            CallAPI('/admin/make_activate', 'POST', {
-                user_id: user_id,
-            }, function(response) {
-            }, function(xhr, status, error) {
+    // Company
+    function loadCompanies() {
+        CallAPI("/admin/get_records/company", 'GET', {}, function (response) {
+            response = response.data;
+            $.each(response, function (index, value) {
+                $("#branchCompany, #managerCompany, #mpCompany").append(`<option value='${value.company_id}'>${value.company_name}</option>`);
+                $("#companyTablesbody").append(`
+                    <tr>
+                    <td>${value.company_name}</td>
+                    <td>${value.company_address}</td>
+                    <td>${value.company_email}</td>
+                    <td>${value.company_phone}</td>
+                    <td><a href='#' class='btn btn-outline-warning' onclick='editCompany(${JSON.stringify(value)},this)'>Edit</a></td>
+                    <td><a href='/admin/delete_company/${value.company_id}' class='btn btn-outline-danger'>Delete</a></td>                    
+                    </tr>
+                    `);
             });
-        }
+        });
+    }
 
-        function Makeverified(user_id) {
-            CallAPI('/admin/make_verified', 'POST', {
-                user_id: user_id,
-            }, function(response) {
-            }, function(xhr, status, error) {
+    // City
+    function editCity(city, button) {
+    // Reset: Remove 'active' class from all rows
+    $("#cityTablesbody tr").removeClass("active");
+
+    // Add 'active' class to the clicked row
+    $(button).closest('tr').addClass('active');
+
+    // Populate the form with city data
+    $("#cityName").val(city.city_name);
+    $("#cityCountry").val(city.country_id); // Assuming city has a country reference
+
+    // Set the form action to point to the update URL
+    $("#cityForm").attr("action", `/admin/update_city/${city.city_id}`);
+    $("#citysubmitBtn").text("Update City");
+}
+
+function resetCityForm() {
+    // Reset the form fields
+    $("#cityForm")[0].reset();
+
+    // Reset the form action to default (Add mode)
+    $("#cityForm").attr("action", "/admin/add_city");
+
+    // Reset the submit button text to "Save changes"
+    $("#citysubmitBtn").text("Save changes");
+
+    // Remove the 'active' class from all rows
+    $("#cityTablesbody tr").removeClass("active");
+}
+
+function loadCities() {
+    CallAPI("/admin/get_records/city", 'GET', {}, function (response) {
+        response = response.data;
+        $.each(response, function (index, value) {
+            $("#branchCity").append(`<option value='${value.city_id}'>${value.city_name}</option>`);
+            $("#cityTablesbody").append(`<tr>
+                <td>${value.city_name}</td>
+                <td>${value.country_name}</td>
+                <td><a href='#' class='btn btn-outline-warning' onclick='editCity(${JSON.stringify(value)}, this)'>Edit</a></td>
+                <td><a href='/admin/delete_city/${value.city_id}' class='btn btn-outline-danger'>Delete</a></td>
+            </tr>`);
+        });
+    });
+}
+    // Country
+
+    function editCountry(country, button) {
+        // Reset: Remove 'active' class from all rows
+        $("#countryTablesbody tr").removeClass("active");
+
+        // Add 'active' class to the clicked row
+        $(button).closest('tr').addClass('active');
+
+        // Populate the form with country data
+        $("#country_name").val(country.country_name);
+        $("#country_code").val(country.country_code);
+
+        // Set the form action to point to the update URL
+        $("#countryForm").attr("action", `/admin/update_country/${country.country_id}`);
+        $("#countrysubmitBtn").text("Update Country");
+    }
+    function resetCountryForm() {
+        // Reset the form fields
+        $("#countryForm")[0].reset();
+
+        // Reset the form action to default (Add mode)
+        $("#countryForm").attr("action", "/admin/add_country");
+
+        // Reset the submit button text to "Save changes"
+        $("#countrysubmitBtn").text("Save changes");
+
+        // Remove the 'active' class from all rows (clear the active state)
+        $("#countryTablesbody tr").removeClass("active");
+    }
+    function loadCountries() {
+        CallAPI("/admin/get_records/country", 'GET', {}, function (response) {
+            response = response.data;
+            $.each(response, function (index, value) {
+                $("#cityCountry").append(`<option value='${value.country_id}'>${value.country_name}</option>`);
+                $("#countryTablesbody").append(`<tr><td>${value.country_name}</td>
+                    <td>${value.country_code}</td>
+                     <td><a href='#' class='btn btn-outline-warning' onclick='editCountry(${JSON.stringify(value)},this)'>Edit</a></td>
+                    <td><a href='/admin/delete_country/${value.country_id}' class='btn btn-outline-danger'>Delete</a></td>      
+                    </tr>`);
             });
+        });
+    }
 
-        }
+    // Branch
+    function editBranch(branch, button) {
+    // Reset: Remove 'active' class from all rows
+    $("#branchTablesbody tr").removeClass("active");
 
-        $(document).ready(function() {
-            // company call
-                CallAPI("/admin/get_records/company", 'GET', {
-                }, function(response) {
-                    console.log("Success:", response);
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                        $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                        $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                        $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
+    // Add 'active' class to the clicked row
+    $(button).closest('tr').addClass('active');
 
-            // city
-                CallAPI("/admin/get_records/city", 'GET', {
-                        }, function(response) {
-                            response = response.data
-                            $.each(response, function(index, value) {
-                                $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
-                                $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                            });
-                        }, function(xhr, status, error) {
-                        });
-               
+    // Populate the form with branch data
+    $("#branchName").val(branch.branch_name);
+    $("#branchCompany").val(branch.company_id);
+    $("#branchCity").val(branch.city_id);
 
-                //country
-              
-                CallAPI("/admin/get_records/country", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
-                        $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td> <td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-          
+    // Set the form action to point to the update URL
+    $("#branchForm").attr("action", `/admin/update_branch/${branch.branch_id}`);
+    $("#branchsubmitBtn").text("Update Branch");
+}
 
-                //branch
-           
-                CallAPI("/admin/get_records/branch", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
-                        $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
+function resetBranchForm() {
+    // Reset the form fields
+    $("#branchForm")[0].reset();
 
-                //department
-                CallAPI("/admin/get_records/department", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
-                        $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
+    // Reset the form action to default (Add mode)
+    $("#branchForm").attr("action", "/admin/add_branch");
 
-                //project
-                CallAPI("/admin/get_records/project", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
-                        $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+    // Reset the submit button text to "Save changes"
+    $("#branchsubmitBtn").text("Save changes");
 
-                    });
-                }, function(xhr, status, error) {
-                });
+    // Remove the 'active' class from all rows
+    $("#branchTablesbody tr").removeClass("active");
+}
 
-                //manager
-                CallAPI("/admin/get_records/manager", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
-                        $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-            
-                //customers
-                CallAPI("/auth/customers", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerProjectMapUserManager").append("<option value='" + value.id + "'>" + value.username + "</option>");
+function loadBranches() {
+    CallAPI("/admin/get_records/branch", 'GET', {}, function (response) {
+        response = response.data;
+        $.each(response, function (index, value) {
+            $("#departmentBranch").append(`<option value='${value.branch_id}'>${value.branch_name}</option>`);
+            $("#branchTablesbody").append(`<tr>
+                <td>${value.branch_name}</td>
+                <td>${value.company_name}</td>
+                <td>${value.city_name}</td>
+                <td><a href='#' class='btn btn-outline-warning' onclick='editBranch(${JSON.stringify(value)}, this)'>Edit</a></td>
+                <td><a href='/admin/delete_branch/${value.branch_id}' class='btn btn-outline-danger'>Delete</a></td>
+            </tr>`);
+        });
+    });
+}
 
-                    });
-                }, function(xhr, status, error) {
-                });
+    // Department
+    function editDepartment(department, button) {
+    $("#departmentTablesbody tr").removeClass("active");
+    $(button).closest('tr').addClass('active');
 
-                //ManagerProjectMap
-                CallAPI("/admin/get_records/ManagerProjectMap", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
+    $("#departmentName").val(department.department_name);
+    $("#departmentBranch").val(department.branch_id);
 
-                    });
-                }, function(xhr, status, error) {
-                });
+    $("#departmentForm").attr("action", `/admin/update_department/${department.department_id}`);
+    $("#departmentsubmitBtn").text("Update Department");
+}
+
+function resetDepartmentForm() {
+    $("#departmentForm")[0].reset();
+    $("#departmentForm").attr("action", "/admin/add_department");
+    $("#departmentsubmitBtn").text("Save changes");
+    $("#departmentTablesbody tr").removeClass("active");
+}
+
+function loadDepartments() {
+    CallAPI("/admin/get_records/department", 'GET', {}, function (response) {
+        response = response.data;
+        $.each(response, function (index, value) {
+            $("#projectDepartment").append(`<option value='${value.department_id}'>${value.department_name}</option>`);
+            $("#departmentTablesbody").append(`<tr>
+                <td>${value.department_name}</td>
+                <td>${value.branch_name}</td>
+                <td><a href='#' class='btn btn-outline-warning' onclick='editDepartment(${JSON.stringify(value)}, this)'>Edit</a></td>
+                <td><a href='/admin/delete_department/${value.department_id}' class='btn btn-outline-danger'>Delete</a></td>
+            </tr>`);
+        });
+    });
+}
+
+    // Project
+    function editProject(project, button) {
+    $("#projectTablesbody tr").removeClass("active");
+    $(button).closest('tr').addClass('active');
+
+    $("#projectName").val(project.project_name);
+    $("#projectDepartment").val(project.department_id);
+
+    $("#projectForm").attr("action", `/admin/update_project/${project.project_id}`);
+    $("#projectsubmitBtn").text("Update Project");
+}
+
+function resetProjectForm() {
+    $("#projectForm")[0].reset();
+    $("#projectForm").attr("action", "/admin/add_project");
+    $("#projectsubmitBtn").text("Save changes");
+    $("#projectTablesbody tr").removeClass("active");
+}
+
+function loadProjects() {
+    CallAPI("/admin/get_records/project", 'GET', {}, function (response) {
+        response = response.data;
+        $.each(response, function (index, value) {
+            $("#managerProjectMapProject").append(`<option value='${value.project_id}'>${value.project_name}</option>`);
+            $("#projectTablesbody").append(`<tr>
+                <td>${value.project_name}</td>
+                <td>${value.department_name}</td>
+                <td><a href='#' class='btn btn-outline-warning' onclick='editProject(${JSON.stringify(value)}, this)'>Edit</a></td>
+                <td><a href='/admin/delete_project/${value.project_id}' class='btn btn-outline-danger'>Delete</a></td>
+            </tr>`);
+        });
+    });
+}
+
+
+    // Manager
+    function loadManagers() {
+        CallAPI("/admin/get_records/manager", 'GET', {}, function (response) {
+            response = response.data;
+            $.each(response, function (index, value) {
+                $("#managerProjectMapManager").append(`<option value='${value.manager_id}'>${value.manager_name}</option>`);
+                $("#managerTablesbody").append(`<tr><td>${value.manager_name}</td>
+                    <td><a href='/admin/delete_manager/${value.manager_id}' class='btn btn-outline-danger'>Delete</a></td></tr>`);
             });
+        });
+    }
+
+    // Customers
+    function loadCustomers() {
+        CallAPI("/auth/customers", 'GET', {}, function (response) {
+            response = response.data;
+            $.each(response, function (index, value) {
+                $("#managerProjectMapUserManager").append(`<option value='${value.id}'>${value.username}</option>`);
+            });
+        });
+    }
+
+    // Manager-Project Map
+    function loadManagerProjectMaps() {
+        CallAPI("/admin/get_records/ManagerProjectMap", 'GET', {}, function (response) {
+            response = response.data;
+            $.each(response, function (index, value) {
+                $("#managerprojectTablesbody").append(`<tr><td>${value.company_name}</td>
+                    <td>${value.city_name}</td>
+                    <td>${value.branch_name}</td>
+                    <td>${value.department_name}</td>
+                    <td>${value.project_name}</td>
+                    <td>${value.manager_name}</td>
+                    <td><a href='/admin/delete_manager_project_map/${value.id}' class='btn btn-outline-danger'>Delete</a></td></tr>`);
+            });
+        });
+    }
+
 
 </script>
 
-<script>
-    $(document).ready(function() {
-        // company call
-            CallAPI("/admin/get_records/company", 'GET', {
-            }, function(response) {
-                console.log("Success:", response);
-                response = response.data
-                $.each(response, function(index, value) {
-                    $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                    $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                    $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                    $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                });
-            }, function(xhr, status, error) {
-            });
 
-        // city
-            CallAPI("/admin/get_records/city", 'GET', {
-                    }, function(response) {
-                        response = response.data
-                        $.each(response, function(index, value) {
-                            $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
-                            $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                        });
-                    }, function(xhr, status, error) {
-                    });
-           
-
-            //country
-     // company call
-     CallAPI("/admin/get_records/company", 'GET', {
-                }, function(response) {
-                    console.log("Success:", response);
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#branchCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                        $("#managerCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                        $("#mpCompany").append("<option value='" + value.company_id + "'>" + value.company_name + "</option>");
-                        $("#companyTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.company_address + "</td><td>" + value.company_email + "</td><td>" + value.company_phone + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-
-            // city
-                CallAPI("/admin/get_records/city", 'GET', {
-                        }, function(response) {
-                            response = response.data
-                            $.each(response, function(index, value) {
-                                $("#branchCity").append("<option value='" + value.city_id + "'>" + value.city_name + "</option>");
-                                $("#cityTablesbody").append("<tr><td>" + value.city_name + "</td><td>" + value.country_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                            });
-                        }, function(xhr, status, error) {
-                        });
-               
-
-                //country
-              
-                CallAPI("/admin/get_records/country", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#cityCountry").append("<option value='" + value.country_id + "'>" + value.country_name + "</option>");
-                        $("#countryTablesbody").append("<tr><td>" + value.country_name + "</td><td>" + value.country_code + "</td> <td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-          
-
-                //branch
-           
-                CallAPI("/admin/get_records/branch", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#departmentBranch").append("<option value='" + value.branch_id + "'>" + value.branch_name + "</option>");
-                        $("#branchTablesbody").append("<tr><td>" + value.branch_name + "</td><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-
-                //department
-                CallAPI("/admin/get_records/department", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#projectDepartment").append("<option value='" + value.department_id + "'>" + value.department_name + "</option>");
-                        $("#departmentTablesbody").append("<tr><td>" + value.department_name + "</td><td>" + value.branch_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-
-                //project
-                CallAPI("/admin/get_records/project", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerProjectMapProject").append("<option value='" + value.project_id + "'>" + value.project_name + "</option>");
-                        $("#projectTablesbody").append("<tr><td>" + value.project_name + "</td><td>" + value.department_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-
-                    });
-                }, function(xhr, status, error) {
-                });
-
-                //manager
-                CallAPI("/admin/get_records/manager", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerProjectMapManager").append("<option value='" + value.manager_id + "'>" + value.manager_name + "</option>");
-                        $("#managerTablesbody").append("<tr><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-                    });
-                }, function(xhr, status, error) {
-                });
-            
-                //customers
-                CallAPI("/auth/customers", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerProjectMapUserManager").append("<option value='" + value.id + "'>" + value.username + "</option>");
-
-                    });
-                }, function(xhr, status, error) {
-                });
-
-                //ManagerProjectMap
-                CallAPI("/admin/get_records/ManagerProjectMap", 'GET', {
-                }, function(response) {
-                    response = response.data
-                    $.each(response, function(index, value) {
-                        $("#managerprojectTablesbody").append("<tr><td>" + value.company_name + "</td><td>" + value.city_name + "</td><td>" + value.branch_name + "</td><td>" + value.department_name + "</td><td>" + value.project_name + "</td><td>" + value.manager_name + "</td><td><a herf='' class='btn btn-outline-danger'>delete</td></tr>");
-
-                    });
-                }, function(xhr, status, error) {
-                });
-            });
-           
-
-</script>
 {% endblock content %}

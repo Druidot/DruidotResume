@@ -17,6 +17,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Toastr -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
 
     <style>
         .required {
@@ -26,19 +31,51 @@
         label {
             font-weight: bold;
         }
+        .toast-container {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1050;
+  max-width: 300px;
+}
+
+.toast-message {
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.active {
+        background-color: #ee0909;  /* Light blue background */
+        color: white;
+    }
+
     </style>
 
 </head>
 
 <body>
 
-
+<!-- Flash Messages -->
+    
 
 {% include 'admin_pannels/user_profile.html' %}
     
 
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-
+       
 
         <div class="app-header header-shadow">
             <div class="app-header__logo">
@@ -154,12 +191,42 @@
 
         {% include 'common_components/ui_settings.html' %}
         <div class="app-main">
+           
             {% if current_user.is_admin %}
             {% include 'common_components/sidebar.html' %}
             {% endif %}
 
             <div class="app-main__outer">
                 <div class="app-main__inner">
+                    <!-- <div class="alert alert-success mt-3 text-center">
+                        {{ message }}
+                      </div> -->
+                      <div id="toast-container">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                            <script>
+                              $(document).ready(function () {
+                                toastr.options = {
+                                  closeButton: true,
+                                  progressBar: false,
+                                  positionClass: 'toast-top-right',
+                                  timeOut: '4000',
+                                  extendedTimeOut: '1000',
+                                  showEasing: 'swing',
+                                  hideEasing: 'linear',
+                                  showMethod: 'fadeIn',
+                                  hideMethod: 'fadeOut'
+                                };
+                    
+                                {% for category, message in messages %}
+                                  toastr["{{ category }}"]("{{ message }}");
+                                {% endfor %}
+                              });
+                            </script>
+                          {% endif %}
+                        {% endwith %}
+                      </div>
+                      
                     {% block content %}
                     {% endblock %}
                 </div>
@@ -190,42 +257,86 @@
         //    $(document).ready(function () {
         //         applyDataTables(); // Call the function to apply DataTables to all tables
         //     });
-        function CallAPI(endpoint, method, data, onSuccess = null, onError = null) {
-            $.ajax({
-                url: endpoint,
-                type: method,
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function (response) {
-                    console.log("Success:", response);
-                    if (method == "POST") {
+        // function CallAPI(endpoint, method, data, onSuccess = null, onError = null) {
+        //     $.ajax({
+        //         url: endpoint,
+        //         type: method,
+        //         data: JSON.stringify(data),
+        //         contentType: 'application/json',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             console.log("Success:", response);
+        //             if (method == "POST") {
 
-                        Swal.fire({
-                            icon: response.icon || "success",
-                            title: response.title || "Success",
-                            text: response.message || "Operation completed successfully",
-                        });
-                    }
+        //                 Swal.fire({
+        //                     icon: response.icon || "success",
+        //                     title: response.title || "Success",
+        //                     text: response.message || "Operation completed successfully",
+        //                 });
+        //             }
 
-                    if (onSuccess) onSuccess(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error:", error);
-                    if (method == "POST") {
+        //             if (onSuccess) onSuccess(response);
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error("Error:", error);
+        //             if (method == "POST") {
+        //                 Swal.fire({
+        //                     icon: (xhr.responseJSON && xhr.responseJSON.icon) || "error",
+        //                     title: "Error",
+        //                     text: (xhr.responseJSON && xhr.responseJSON.message) || "Something went wrong",
+        //                 });
+        //             }
+
+        //             if (onError) onError(xhr, status, error);
+        //         }
+        //     });
+        //     applyDataTables();
+
+        // }
+
+
+
+        function CallAPI(endpoint, method = 'GET', data = {}, onSuccess = null, onError = null) {
+                $.ajax({
+                    url: endpoint,
+                    type: method,
+                    data: method === 'GET' ? data : JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log("Success:", response);
+
+                        if (method === "POST" || method === "PUT") {
+                            Swal.fire({
+                                icon: response.icon || "success",
+                                title: response.title || "Success",
+                                text: response.message || "Operation completed successfully",
+                            });
+                        }
+
+                        if (typeof onSuccess === 'function') {
+                            onSuccess(response);
+                        }
+
+                        // Apply DataTables only after successful data loading
+                        applyDataTables();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+
                         Swal.fire({
                             icon: (xhr.responseJSON && xhr.responseJSON.icon) || "error",
-                            title: "Error",
+                            title: (xhr.responseJSON && xhr.responseJSON.title) || "Error",
                             text: (xhr.responseJSON && xhr.responseJSON.message) || "Something went wrong",
                         });
+
+                        if (typeof onError === 'function') {
+                            onError(xhr, status, error);
+                        }
                     }
+                });
+            }
 
-                    if (onError) onError(xhr, status, error);
-                }
-            });
-            applyDataTables();
-
-        }
 
 
     </script>

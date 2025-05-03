@@ -9,29 +9,46 @@
                 </button>
             </div>
             <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-                <form action="/admin/add_city" method="POST">
+                <form action="/admin/add_city" method="POST" id="cityForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">
                                 City Name <span class="required text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" name="city_name" required placeholder="Enter city name">
+                            <input type="text" class="form-control" name="city_name" required placeholder="Enter city name" id="cityName">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">
                                 Country <span class="required text-danger">*</span>
                             </label>
-                            <select class="form-control" id="cityCountry" name="city_country" required>
+                            <select class="form-control" id="cityCountry" name="city_country" required placeholder="Select country">
                                 <option value="" disabled selected>Select Country</option>
                                 <!-- Dynamically populate this with countries -->
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Save changes</button>
+                        <button type="reset" class="btn btn-dark" id="Reset" onclick="resetCityForm()">Reset</button>
+                        <button type="submit" class="btn btn-info" id="citysubmitBtn">Save changes</button>
                     </div>
                 </form>
+
+                <div class="container mt-4">
+                    <table id="cityTables" class="table table-bordered table-hover table-responsive table-sm text-center my-5">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>City Name</th>
+                                <th>Country</th>
+                                <th colspan="2">Action</th>
+    
+                            </tr>
+                        </thead>
+                        <tbody id="cityTablesbody">
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
                 
             </div>
         </div>

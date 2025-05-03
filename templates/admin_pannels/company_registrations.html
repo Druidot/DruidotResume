@@ -9,47 +9,49 @@
                 </button>
             </div>
 
-            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-                <form action="/admin/add_company" method="POST">
+            <div class="modal-body">
+                <form action="/admin/add_company" method="POST" id="companyForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Company Name<span class="required">*</span></label>
-                            <input type="text" class="form-control" required name="company_name" placeholder="Company Name">
+                            <input type="text" class="form-control" required name="company_name" placeholder="Company Name" id="company_name">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Company Address<span class="required">*</span></label>
-                            <input type="text" class="form-control" name="company_address" placeholder="Company Address">
+                            <input type="text" class="form-control" name="company_address" placeholder="Company Address" id="company_address">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Email<span class="required">*</span></label>
-                            <input type="email" class="form-control" required name="company_email" placeholder="Company Email">
+                            <input type="email" class="form-control" required name="company_email" placeholder="Company Email" id="company_email">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Phone<span class="required">*</span></label>
-                            <input type="text" class="form-control" name="company_phone" placeholder="Company Phone">
+                            <input type="text" class="form-control" name="company_phone" placeholder="Company Phone" id="company_phone">
                         </div>
                     </div>
 
             
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Save changes</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="reset" class="btn btn-dark" id="Reset" onclick="resetForm()">Reset</button>
+                        <button type="submit" class="btn btn-info" id="submitBtn">Save changes</button>
+
                     </div>
                 </form>
 
 
-                <!-- <div class="container mt-4">
-                    <table id="companyTables" class="table table-bordered table-striped table-hover table-responsive table-sm text-center my-5">
+                <div class="container mt-4" style="max-height: 60vh; overflow-y: auto;">
+                    <table id="companyTables" class="table table-bordered table-hover table-responsive table-sm text-center my-5">
                         <thead class="table-info">
                             <tr>
                                 <th>Company Name</th>
                                 <th>Company Address</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <td>Action</td>
+                                <th colspan="2">Action</th>
 
                             </tr>
                         </thead>
@@ -58,10 +60,7 @@
 
                         </tbody>
                     </table>
-                </div> -->
-
-
-
+                </div>
             </div>
 
             

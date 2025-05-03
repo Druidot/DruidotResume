@@ -27,6 +27,32 @@ def add_company():
     flash("Company added successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
+@admin_bp.route('/delete_company/<int:company_id>', methods=['GET'])
+def delete_company(company_id):
+    company = Company.query.get_or_404(company_id)
+
+    db.session.delete(company)
+    db.session.commit()
+
+    flash("Company deleted successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
+@admin_bp.route('/update_company/<int:company_id>', methods=['POST'])
+def update_company(company_id):
+    company = Company.query.get_or_404(company_id)
+
+    # Update fields from form data
+    company.company_name = request.form['company_name']
+    company.company_address = request.form['company_address']
+    company.company_email = request.form['company_email']
+    company.company_phone = request.form['company_phone']
+
+    db.session.commit()
+
+    flash("Company updated successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
 # 2️⃣ Add Country
 @admin_bp.route('/add_country', methods=['POST'])
 def add_country():
@@ -38,6 +64,29 @@ def add_country():
     flash("Country added successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
+@admin_bp.route('/update_country/<int:country_id>', methods=['POST'])
+def update_country(country_id):
+    country = Country.query.get_or_404(country_id)
+
+    # Update fields from form data
+    country.country_name = request.form['country_name']
+    country.country_code = request.form['country_code']
+
+    db.session.commit()
+
+    flash("Country updated successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+@admin_bp.route('/delete_country/<int:country_id>', methods=['GET'])
+def delete_country(country_id):
+    country = Country.query.get_or_404(country_id)
+    db.session.delete(country)
+    db.session.commit()
+    
+    flash("Country deleted successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
 
 # 3️⃣ Add City
 @admin_bp.route('/add_city', methods=['POST'])
@@ -48,6 +97,29 @@ def add_city():
     db.session.add(city)
     db.session.commit()
     flash("City added successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+@admin_bp.route('/delete_city/<int:city_id>', methods=['GET'])
+def delete_city(city_id):
+    city = City.query.get_or_404(city_id)
+    db.session.delete(city)
+    db.session.commit()
+    
+    flash("City deleted successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
+@admin_bp.route('/update_city/<int:city_id>', methods=['POST'])
+def update_city(city_id):
+    city = City.query.get_or_404(city_id)
+
+    # Update fields from form data
+    city.city_name = request.form['city_name']
+    city.country_id = request.form['city_country']
+
+    db.session.commit()
+
+    flash("City updated successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
 
@@ -64,6 +136,31 @@ def add_branch():
     flash("Branch added successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
+@admin_bp.route('/delete_branch/<int:branch_id>', methods=['GET'])
+def delete_branch(branch_id):
+    branch = Branch.query.get_or_404(branch_id)
+    db.session.delete(branch)
+    db.session.commit()
+    
+    flash("Branch deleted successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
+@admin_bp.route('/update_branch/<int:branch_id>', methods=['POST'])
+def update_branch(branch_id):
+    branch = Branch.query.get_or_404(branch_id)
+
+    # Update fields from form data
+    branch.branch_name = request.form['branch_name']
+    branch.company_id = request.form['company_id']
+    branch.city_id = request.form['city_id']
+
+    db.session.commit()
+
+    flash("Branch updated successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
 # 5️⃣ Add Department
 @admin_bp.route('/add_department', methods=['POST'])
 def add_department():
@@ -74,6 +171,30 @@ def add_department():
     db.session.commit()
     flash("Department added successfully!", "success")
     return redirect(url_for('auth.dashboard'))
+
+@admin_bp.route('/delete_department/<int:department_id>', methods=['GET'])
+def delete_department(department_id):
+    department = Department.query.get_or_404(department_id)
+    db.session.delete(department)
+    db.session.commit()
+    
+    flash("Department deleted successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
+@admin_bp.route('/update_department/<int:department_id>', methods=['POST'])
+def update_department(department_id):
+    department = Department.query.get_or_404(department_id)
+
+    # Update fields from form data
+    department.department_name = request.form['department_name']
+    department.branch_id = request.form['branch_id']
+
+    db.session.commit()
+
+    flash("Department updated successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
 
 # 6️⃣ Add Project
 @admin_bp.route('/add_project', methods=['POST'])
@@ -86,6 +207,30 @@ def add_project():
     flash("Project added successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
+@admin_bp.route('/delete_project/<int:project_id>', methods=['GET'])
+def delete_project(project_id):
+    project = Project.query.get_or_404(project_id)
+    db.session.delete(project)
+    db.session.commit()
+    
+    flash("Project deleted successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
+@admin_bp.route('/update_project/<int:project_id>', methods=['POST'])
+def update_project(project_id):
+    project = Project.query.get_or_404(project_id)
+
+    # Update fields from form data
+    project.project_name = request.form['project_name']
+    project.department_id = request.form['department_id']
+
+    db.session.commit()
+
+    flash("Project updated successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+
 # 7️⃣ Add Manager
 @admin_bp.route('/add_manager', methods=['POST'])
 def add_manager():
@@ -95,6 +240,15 @@ def add_manager():
     db.session.add(manager)
     db.session.commit()
     flash("Manager added successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+@admin_bp.route('/delete_manager/<int:manager_id>', methods=['GET'])
+def delete_manager(manager_id):
+    manager = Manager.query.get_or_404(manager_id)
+    db.session.delete(manager)
+    db.session.commit()
+    
+    flash("Manager deleted successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
 
@@ -110,6 +264,15 @@ def manager_map_project():
     db.session.add(manager_map_project)
     db.session.commit()
     flash("Manager added successfully!", "success")
+    return redirect(url_for('auth.dashboard'))
+
+@admin_bp.route('/delete_manager_project_map/<int:manager_project_map_id>', methods=['GET'])
+def delete_manager_project_map(manager_project_map_id):
+    manager_project_map = ManagerProjectMapModel.query.get_or_404(manager_project_map_id)
+    db.session.delete(manager_project_map)
+    db.session.commit()
+    
+    flash("Manager-Project Mapping deleted successfully!", "success")
     return redirect(url_for('auth.dashboard'))
 
 

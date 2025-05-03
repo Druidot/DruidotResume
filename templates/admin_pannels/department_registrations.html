@@ -10,13 +10,13 @@
             </div>
 
             <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-                <form action="/admin/add_department" method="POST">
+                <form action="/admin/add_department" method="POST" id="departmentForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">
                                 Department Name <span class="required text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" name="department_name" required placeholder="Enter department name">
+                            <input type="text" class="form-control" name="department_name" required placeholder="Enter department name" id="departmentName">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">
@@ -29,10 +29,27 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Save changes</button>
+                        <button type="reset" class="btn btn-dark" id="Reset" onclick="resetDepartmentForm()">Reset</button>
+                        <button type="submit" class="btn btn-info" id="departmentsubmitBtn">Save changes</button>
                     </div>
                 </form>
+
+                <div class="container mt-4">
+                    <table id="departmentTables" class="table table-bordered table-hover table-responsive table-sm text-center my-5">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Department Name</th>
+                                <th>Branch</th>
+                                <th colspan="2">Action</th>
+    
+                            </tr>
+                        </thead>
+                        <tbody id="departmentTablesbody">
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
                 
             </div>
         </div>

@@ -30,6 +30,11 @@ app.register_blueprint(resume_bp)
 app.register_blueprint(admin_bp)
 
 
+@app.context_processor
+def inject_config():
+    return dict(config=app.config)
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

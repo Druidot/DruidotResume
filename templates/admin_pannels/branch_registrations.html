@@ -10,13 +10,13 @@
             </div>
 
             <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-                <form action="/admin/add_branch" method="POST">
+                <form action="/admin/add_branch" method="POST" id="branchForm">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
                                 Branch Name <span class="required text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" name="branch_name" required placeholder="Enter branch name">
+                            <input type="text" class="form-control" name="branch_name" required placeholder="Enter branch name" id="branchName">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
@@ -38,11 +38,29 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Save changes</button>
+                        <button type="reset" class="btn btn-dark" id="Reset" onclick="resetBranchForm()">Reset</button>
+                        <button type="submit" class="btn btn-info" id="branchsubmitBtn">Save changes</button>
                     </div>
 
                 </form>
+
+                <div class="container mt-4">
+                    <table id="branchTables" class="table table-bordered table-hover table-responsive table-sm text-center my-5">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Branch Name</th>
+                                <th>Company</th>
+                                <th>City</th>
+                                <th colspan="2">Action</th>
+    
+                            </tr>
+                        </thead>
+                        <tbody id="branchTablesbody">
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
                 
             </div>
         </div>

@@ -10,13 +10,13 @@
             </div>
 
             <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-                <form action="/admin/add_project" method="POST">
+                <form action="/admin/add_project" method="POST" id="projectForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">
                                 Project Name <span class="required text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" name="project_name" required placeholder="Enter project name">
+                            <input type="text" class="form-control" name="project_name" required placeholder="Enter project name" id="projectName">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">
@@ -29,11 +29,26 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Save changes</button>
+                        <button type="reset" class="btn btn-dark" id="Reset" onclick="resetProjectForm()">Reset</button>
+                        <button type="submit" class="btn btn-info" id="projectsubmitBtn">Save changes</button>
                     </div>
                 </form>
-                
+                <div class="container mt-4">
+                    <table id="projectTables" class="table table-bordered  table-hover table-responsive table-sm text-center my-5">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Department</th>
+                                <th colspan="2">Action</th>
+    
+                            </tr>
+                        </thead>
+                        <tbody id="projectTablesbody">
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
