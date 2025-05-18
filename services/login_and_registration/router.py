@@ -44,7 +44,7 @@ def api_login(body: UserLoginSchema):
 
 @auth_bp.route('/media/<path:filename>')
 def media(filename):
-    return send_from_directory('.\media\profile_pic', filename)
+    return send_from_directory('media', filename)
 
 @auth_bp.route("/login_page", methods=["GET"])
 def login_page():
@@ -207,9 +207,15 @@ def save_profile():
     pic = request.files.get("profile_picture")
     if pic and pic.filename:
         filename = secure_filename(pic.filename)
-        filepath = os.path.join('.\media\profile_pic', filename)
+        
+        folder = os.path.join('media', 'profile_pic')
+        os.makedirs(folder, exist_ok=True) 
+
+        filepath = os.path.join(folder, filename)  
         pic.save(filepath)
-        profile.profile_picture = filename
+
+        # Save just the relative filename if needed for DB
+        profile.profile_picture = os.path.join('profile_pic', filename)
 
     db.session.add(profile)
     db.session.commit()

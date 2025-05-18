@@ -32,9 +32,19 @@ class ManagerJobdescriptionModel(db.Model):
     job_end_date = db.Column(db.Date, nullable=True)  # End date of the job (if applicable)
     
     manager_id = db.Column(db.Integer, nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('company_mst.company_id'), nullable=False)
+    city_id = db.Column(db.Integer, db.ForeignKey('city_mst.city_id'))
+    branch_id = db.Column(db.Integer, db.ForeignKey('branch_mst.branch_id'))
+    department_id = db.Column(db.Integer, db.ForeignKey('department_mst.department_id'))
     project_id = db.Column(db.Integer, db.ForeignKey('project_mst.project_id', ondelete='CASCADE'), nullable=False)
 
     job_description = db.Column(db.Text, nullable=False)
+
+    project = db.relationship('Project', backref=db.backref('manager_project_job_map', cascade="all, delete"))
+    city = db.relationship('City', backref=db.backref('manager_project_job_map', cascade="all, delete"))
+    branch = db.relationship('Branch', backref=db.backref('manager_project_job_map', cascade="all, delete"))
+    department = db.relationship('Department', backref=db.backref('manager_project_job_map', cascade="all, delete"))
+    company = db.relationship('Company', backref=db.backref('manager_project_job_map', cascade="all, delete"))
     
     # New columns
     is_active = db.Column(db.Boolean, default=True, nullable=False)  # Status flag

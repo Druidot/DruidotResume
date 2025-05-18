@@ -435,7 +435,12 @@ def get_manager_by_project(project_id):
     return get_manager_by_project_service(project_id)
   
 
-@admin_bp.route('/get_records/manager_project_job_map/<project_id>', methods=['GET'])
-def get_manager_project_job_map(project_id):
-    return get_manager_project_job_map_service(project_id)
+@admin_bp.route('/get_records/manager_project_job_map', methods=['GET'])
+def get_manager_project_job_map():
+    company_id = request.args.get('company_id', type=int)
+    city_id = request.args.get('city_id', type=int)
+    branch_id = request.args.get('branch_id', type=int)
+    department_id = request.args.get('department_id', type=int)
+    project_id = request.args.get('project_id', type=int)
+    return get_manager_project_job_map_service(company_id=company_id, city_id=city_id, branch_id=branch_id, department_id=department_id, project_id=project_id)
    

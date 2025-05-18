@@ -311,9 +311,21 @@ def get_manager_by_project_service(project_id):
         )
 #-------END----------------------------------------get_manager_by_project_service------------------------------------------------END--#
 #-------START----------------------------------------get_manager_project_job_map_service------------------------------------------------START--#
-def get_manager_project_job_map_service(project_id):
+def get_manager_project_job_map_service(company_id=None, city_id=None ,branch_id=None, department_id=None, project_id=None):
 
-    job_descriptions = ManagerJobdescriptionModel.query.filter_by(project_id=project_id).all()
+    job_descriptions = ManagerJobdescriptionModel.query
+    print("company_id",type(company_id))
+    if company_id:
+        job_descriptions = job_descriptions.filter_by(company_id=company_id)
+    if city_id:
+        job_descriptions = job_descriptions.filter_by(city_id=city_id)
+    if branch_id:
+        job_descriptions = job_descriptions.filter_by(branch_id=branch_id)
+    if department_id:
+        job_descriptions = job_descriptions.filter_by(department_id=department_id)
+    if project_id:
+        job_descriptions = job_descriptions.filter_by(project_id=project_id)
+    
     job_description_list = [
         {
             "job_description_id": job.id,
@@ -360,6 +372,10 @@ def create_job_description_service(data):
         job = ManagerJobdescriptionModel(
             manager_id=data['manager_id'],
             project_id=data['project_id'],
+            company_id=data['company_id'],
+            city_id=data['city_id'],
+            branch_id=data['branch_id'],
+            department_id=data['department_id'],
             job_description=data['job_description'],
             job_title=data['job_title'],
             created_by=current_user.username,

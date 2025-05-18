@@ -416,6 +416,10 @@ async function createJobDescription(project_id, manager_id) {
     const jobData = {
         manager_id: 1,
         project_id: project_id,
+        company_id: {{company_id}},
+        city_id: document.getElementById('citySelect').value,
+        branch_id: document.getElementById('branchSelect').value,
+        department_id: document.getElementById('departmentSelect').value,
         job_title: title,
         job_location: location,
         job_type: type,
