@@ -444,3 +444,10 @@ def get_manager_project_job_map():
     project_id = request.args.get('project_id', type=int)
     return get_manager_project_job_map_service(company_id=company_id, city_id=city_id, branch_id=branch_id, department_id=department_id, project_id=project_id)
    
+@admin_bp.route('/help_page', methods=['GET'])
+@login_required
+def help_page():
+    if current_user.is_admin:
+        return render_template('./common_components/Admin_help.html')   
+    else:
+        return render_template('./common_components/user_help.html')
